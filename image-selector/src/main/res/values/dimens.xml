@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="is_image_recycler_view_item_offset">2dp</dimen>
+    <dimen name="is_folder_cover_size">72dp</dimen>
+</resources>

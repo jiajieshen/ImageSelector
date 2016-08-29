@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fubaisum.imageselector.lib.widget.SquareFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/is_parent_camera"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/is_color_343535"
+    android:clickable="true"
+    android:foreground="?selectableItemBackground">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawablePadding="10dp"
+        android:drawableTop="@mipmap/is_ic_camera"
+        android:gravity="center_horizontal"
+        android:text="Camera"
+        android:textColor="@color/is_color_999999"
+        android:textSize="14sp" />
+
+</com.fubaisum.imageselector.lib.widget.SquareFrameLayout>
