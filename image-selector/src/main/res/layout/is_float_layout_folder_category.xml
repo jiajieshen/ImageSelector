@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/is_parent_folder_category"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#cc000000"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/is_btn_folder_category"
+        android:layout_width="wrap_content"
+        android:layout_height="?android:actionBarSize"
+        android:background="@null"
+        android:drawablePadding="5dp"
+        android:drawableRight="@mipmap/is_ic_folder_category_indicator"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:singleLine="true"
+        android:textColor="@color/is_folder_category_text_color"
+        android:textSize="16sp"
+        tools:text="@string/is_all_images" />
+
+</LinearLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/is_recycler_view_image"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/is_color_21282c"
+    android:orientation="vertical"
+    android:paddingBottom="?android:actionBarSize"
+    android:clipToPadding="false"
+    android:paddingLeft="@dimen/is_image_recycler_view_item_offset"
+    android:paddingRight="@dimen/is_image_recycler_view_item_offset" />
+
