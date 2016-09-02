@@ -137,7 +137,7 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             public void onClick(View v) {
                 int position = imageItemViewHolder.getAdapterPosition();
                 // TODO: If not previewing the image, invoke the onSelectImageItem() method.
-                onClickImageItem(position);
+                onSelectImageItem(imageItemViewHolder.cbState, position);
             }
         });
         imageItemViewHolder.cbState.setOnClickListener(new View.OnClickListener() {
