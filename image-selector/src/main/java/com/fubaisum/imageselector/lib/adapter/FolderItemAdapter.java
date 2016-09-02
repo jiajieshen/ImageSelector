@@ -1,6 +1,7 @@
 package com.fubaisum.imageselector.lib.adapter;
 
 import android.app.Activity;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,10 +25,13 @@ public class FolderItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<FolderItem> items;
     private OnItemClickListener onItemClickListener;
 
+    private boolean isGlideSkipMemoryCache;
     private int crrSelectedPosition = 0;
 
     public FolderItemAdapter(Activity activity) {
         this.activity = activity;
+
+        isGlideSkipMemoryCache = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
     public List<FolderItem> getItems() {
@@ -95,7 +99,7 @@ public class FolderItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         Glide.with(activity)
                 .load(position == 0 ? R.mipmap.is_thumbnail_default : item.imageItemList.get(0).path)
                 .asBitmap()
-                .skipMemoryCache(true)
+                .skipMemoryCache(isGlideSkipMemoryCache)
                 .centerCrop()
                 .dontAnimate()
                 .into(viewHolder.ivCover);

@@ -1,6 +1,7 @@
 package com.fubaisum.imageselector.lib.adapter;
 
 import android.app.Activity;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,6 +31,8 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private List<ImageItem> items;
     private OnItemClickListener onItemClickListener;
 
+    private boolean isGlideSkipMemoryCache;
+
     // The ImageSelector configuration
     private Configuration config;
 
@@ -40,6 +43,8 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public ImageItemAdapter(Activity activity, Configuration configuration) {
         this.activity = activity;
         this.config = configuration;
+
+        isGlideSkipMemoryCache = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
     public void setItems(List<ImageItem> items, boolean isExpectShowCamera) {
@@ -82,6 +87,7 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         Glide.with(activity)
                 .load(item.path)
                 .asBitmap()
+                .skipMemoryCache(true)
                 .centerCrop()
                 .into(imageItemViewHolder.sivThumbnail);
         imageItemViewHolder.cbState.setChecked(item.isSelected);
