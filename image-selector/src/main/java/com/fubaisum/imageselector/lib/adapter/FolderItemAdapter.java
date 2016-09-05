@@ -99,6 +99,7 @@ public class FolderItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         Glide.with(activity)
                 .load(position == 0 ? R.mipmap.is_thumbnail_default : item.imageItemList.get(0).path)
                 .asBitmap()
+                .error(R.mipmap.is_thumbnail_default)
                 .skipMemoryCache(isGlideSkipMemoryCache)
                 .centerCrop()
                 .dontAnimate()
