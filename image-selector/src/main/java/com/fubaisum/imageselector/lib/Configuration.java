@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by sum on 8/30/16.
  */
-public class Configuration implements Parcelable {
+class Configuration implements Parcelable {
 
     public static final int DEFAULT_MAX_MULTIPLE_CHOICE_COUNT = 9;
 

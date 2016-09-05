@@ -117,7 +117,9 @@ public class ImageSelectorActivity extends AppCompatActivity
         ItemOffsetDecoration itemOffsetDecoration = new ItemOffsetDecoration(this, R.dimen.is_image_recycler_view_item_offset);
         imageRecyclerView.addItemDecoration(itemOffsetDecoration);
 
-        imageItemAdapter = new ImageItemAdapter(this, configuration);
+        imageItemAdapter = new ImageItemAdapter(this);
+        imageItemAdapter.setMultipleChoiceMode(configuration.isMultipleChoiceMode);
+        imageItemAdapter.setMaxSelectableSize(configuration.maxSelectableSize);
         imageItemAdapter.setOnItemClickListener(this);
 
         imageRecyclerView.setAdapter(imageItemAdapter);

@@ -12,7 +12,7 @@ import android.support.v7.app.AlertDialog;
 /**
  * Created by sum on 9/1/16.
  */
-public class PermissionHelper {
+class PermissionHelper {
 
     private static final int REQUEST_ACCESS_EXTERNAL_STORAGE = 100;
     private static final int REQUEST_SHOW_CAMERA = 101;

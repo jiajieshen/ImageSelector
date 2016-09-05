@@ -12,7 +12,6 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.fubaisum.imageselector.lib.Configuration;
 import com.fubaisum.imageselector.lib.R;
 import com.fubaisum.imageselector.lib.model.ImageItem;
 import com.fubaisum.imageselector.lib.widget.SquareImageView;
@@ -33,23 +32,29 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private boolean isGlideSkipMemoryCache;
 
-    // The ImageSelector configuration
-    private Configuration config;
-
     private boolean isShowCamera;// decided by config and folder
+    private boolean isMultipleChoiceMode;
+    private int maxSelectableSize;
     private int crrSelectedSize;
     private ImageItem lastSelectedItem;// only use in radio mode
 
-    public ImageItemAdapter(Activity activity, Configuration configuration) {
+    public ImageItemAdapter(Activity activity) {
         this.activity = activity;
-        this.config = configuration;
 
         isGlideSkipMemoryCache = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
+    public void setMultipleChoiceMode(boolean isMultipleChoice) {
+        this.isMultipleChoiceMode = isMultipleChoice;
+    }
+
+    public void setMaxSelectableSize(int maxSelectableSize) {
+        this.maxSelectableSize = maxSelectableSize;
+    }
+
     public void setItems(List<ImageItem> items, boolean isExpectShowCamera) {
         this.items = items;
-        this.isShowCamera = config.isShowCamera && isExpectShowCamera;
+        this.isShowCamera = isShowCamera && isExpectShowCamera;
     }
 
     public int getCurrentSelectedSize() {
@@ -87,7 +92,7 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         Glide.with(activity)
                 .load(item.path)
                 .asBitmap()
-                .skipMemoryCache(true)
+                .skipMemoryCache(isGlideSkipMemoryCache)
                 .centerCrop()
                 .into(imageItemViewHolder.sivThumbnail);
         imageItemViewHolder.cbState.setChecked(item.isSelected);
@@ -164,7 +169,7 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (position < 0 || position >= getItemCount()) {
             return;
         }
-        if (config.isMultipleChoiceMode) {// multiple choice mode
+        if (isMultipleChoiceMode) {// multiple choice mode
             handleMultipleChoiceEvent(checkBox, position);
         } else {// radio choice mode
             handleRadioChoiceEvent(position);
@@ -176,7 +181,7 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ImageItem crrItem = items.get(isShowCamera ? position - 1 : position);
         // Check the selectable upper limit before add a new choice.
         if (!crrItem.isSelected) {
-            if (crrSelectedSize + 1 > config.maxSelectableSize) {
+            if (crrSelectedSize + 1 > maxSelectableSize) {
                 checkBox.setChecked(false);
                 Toast.makeText(activity, R.string.is_msg_amount_limit, Toast.LENGTH_SHORT).show();
                 return;
