@@ -103,7 +103,6 @@ public class FolderItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 .skipMemoryCache(isGlideSkipMemoryCache)
                 .dontAnimate()
                 .into(viewHolder.ivCover);
-
     }
 
     @Override

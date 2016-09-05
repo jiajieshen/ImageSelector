@@ -3,7 +3,9 @@ package com.fubaisum.imageselector.lib.adapter;
 import android.app.Activity;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +97,8 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
         ImageItemViewHolder imageItemViewHolder = (ImageItemViewHolder) viewHolder;
         ImageItem item = items.get(isShowCamera ? position - 1 : position);
+        Log.e("TAG", "position = " + position);
+        Log.e("TAG", "item path = " + item.path);
         Glide.with(activity)
                 .load(item.path)
                 .asBitmap()
@@ -148,7 +152,7 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             public void onClick(View v) {
                 int position = imageItemViewHolder.getAdapterPosition();
                 // TODO: If not previewing the image, invoke the onSelectImageItem() method.
-                onSelectImageItem(imageItemViewHolder.cbState, position);
+                onSelectImageItem(null, position);
             }
         });
         imageItemViewHolder.cbState.setOnClickListener(new View.OnClickListener() {
@@ -182,16 +186,16 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    private void handleMultipleChoiceEvent(CheckBox checkBox, int position) {
+    private void handleMultipleChoiceEvent(@Nullable CheckBox checkBox, int position) {
         // Get current selected item
         ImageItem crrItem = items.get(isShowCamera ? position - 1 : position);
         // Check the selectable upper limit before add a new choice.
-        if (!crrItem.isSelected) {
-            if (crrSelectedSize + 1 > maxSelectableSize) {
+        if (!crrItem.isSelected && crrSelectedSize + 1 > maxSelectableSize) {
+            if (checkBox != null) {
                 checkBox.setChecked(false);
                 Toast.makeText(activity, R.string.is_msg_amount_limit, Toast.LENGTH_SHORT).show();
-                return;
             }
+            return;
         }
         // refresh new selected item view
         crrItem.isSelected = !crrItem.isSelected;
