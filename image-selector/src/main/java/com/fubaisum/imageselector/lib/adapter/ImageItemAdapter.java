@@ -97,8 +97,6 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
         ImageItemViewHolder imageItemViewHolder = (ImageItemViewHolder) viewHolder;
         ImageItem item = items.get(isShowCamera ? position - 1 : position);
-        Log.e("TAG", "position = " + position);
-        Log.e("TAG", "item path = " + item.path);
         Glide.with(activity)
                 .load(item.path)
                 .asBitmap()
