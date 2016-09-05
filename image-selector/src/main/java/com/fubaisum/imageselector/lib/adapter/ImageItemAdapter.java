@@ -52,6 +52,10 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.maxSelectableSize = maxSelectableSize;
     }
 
+    public void setShowCamera(boolean showCamera) {
+        isShowCamera = showCamera;
+    }
+
     public void setItems(List<ImageItem> items, boolean isExpectShowCamera) {
         this.items = items;
         this.isShowCamera = isShowCamera && isExpectShowCamera;

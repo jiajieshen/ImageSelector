@@ -120,6 +120,7 @@ public class ImageSelectorActivity extends AppCompatActivity
         imageItemAdapter = new ImageItemAdapter(this);
         imageItemAdapter.setMultipleChoiceMode(configuration.isMultipleChoiceMode);
         imageItemAdapter.setMaxSelectableSize(configuration.maxSelectableSize);
+        imageItemAdapter.setShowCamera(configuration.isShowCamera);
         imageItemAdapter.setOnItemClickListener(this);
 
         imageRecyclerView.setAdapter(imageItemAdapter);
