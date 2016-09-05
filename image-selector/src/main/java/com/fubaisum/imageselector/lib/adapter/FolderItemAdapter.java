@@ -101,7 +101,6 @@ public class FolderItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 .asBitmap()
                 .error(R.mipmap.is_thumbnail_default)
                 .skipMemoryCache(isGlideSkipMemoryCache)
-                .centerCrop()
                 .dontAnimate()
                 .into(viewHolder.ivCover);
 

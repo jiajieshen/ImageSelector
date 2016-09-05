@@ -17,6 +17,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -120,7 +121,7 @@ public class ImageSelectorActivity extends AppCompatActivity
         imageItemAdapter = new ImageItemAdapter(this);
         imageItemAdapter.setMultipleChoiceMode(configuration.isMultipleChoiceMode);
         imageItemAdapter.setMaxSelectableSize(configuration.maxSelectableSize);
-        imageItemAdapter.setShowCamera(configuration.isShowCamera);
+        imageItemAdapter.setCanShowCamera(configuration.isShowCamera);
         imageItemAdapter.setOnItemClickListener(this);
 
         imageRecyclerView.setAdapter(imageItemAdapter);
@@ -353,6 +354,7 @@ public class ImageSelectorActivity extends AppCompatActivity
 
     @Override
     public void onClickFolderItem(FolderItem folderItem) {
+        Log.e("TAG", "folder path = " + folderItem.path);
         boolean isExpectCamera = folderItemAdapter.isFullImageListFolderItem(folderItem);
         // refresh image list
         imageItemAdapter.setItems(folderItem.imageItemList, isExpectCamera);

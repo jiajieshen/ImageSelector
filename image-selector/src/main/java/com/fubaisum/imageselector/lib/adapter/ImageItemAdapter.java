@@ -32,11 +32,13 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private boolean isGlideSkipMemoryCache;
 
-    private boolean isShowCamera;// decided by config and folder
+    private boolean isCanShowCamera;// the camera configuration
     private boolean isMultipleChoiceMode;
     private int maxSelectableSize;
     private int crrSelectedSize;
     private ImageItem lastSelectedItem;// only use in radio mode
+
+    private boolean isShowCamera;// decided by configuration and folder
 
     public ImageItemAdapter(Activity activity) {
         this.activity = activity;
@@ -52,13 +54,13 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.maxSelectableSize = maxSelectableSize;
     }
 
-    public void setShowCamera(boolean showCamera) {
-        isShowCamera = showCamera;
+    public void setCanShowCamera(boolean canShowCamera) {
+        isCanShowCamera = canShowCamera;
     }
 
     public void setItems(List<ImageItem> items, boolean isExpectShowCamera) {
         this.items = items;
-        this.isShowCamera = isShowCamera && isExpectShowCamera;
+        this.isShowCamera = isCanShowCamera && isExpectShowCamera;
     }
 
     public int getCurrentSelectedSize() {
@@ -97,7 +99,7 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 .load(item.path)
                 .asBitmap()
                 .skipMemoryCache(isGlideSkipMemoryCache)
-                .centerCrop()
+                .error(R.mipmap.is_thumbnail_default)
                 .into(imageItemViewHolder.sivThumbnail);
         imageItemViewHolder.cbState.setChecked(item.isSelected);
         if (item.isSelected) {

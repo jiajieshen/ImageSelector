@@ -21,7 +21,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:contentDescription="@null"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             tools:background="@color/is_color_343535" />
 
         <LinearLayout
