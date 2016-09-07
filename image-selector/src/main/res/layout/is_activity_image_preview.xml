@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/is_color_21282c">
 
     <com.fubaisum.imageselector.lib.widget.HackyViewPager
         android:id="@+id/is_view_pager"
@@ -14,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="?android:actionBarSize"
         android:layout_gravity="bottom"
-        android:background="#BF000000"
+        android:background="@color/is_color_BF000000"
         android:orientation="horizontal">
 
         <CheckBox
@@ -24,10 +25,9 @@
             android:layout_gravity="center_vertical|end"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:checked="true"
             android:text="@string/is_select"
             android:textColor="@color/is_preview_checkbox_text_color"
-            android:theme="@style/ImageSelectorCheckBox" />
+            android:theme="@style/ImageSelectorPreviewCheckBox" />
 
     </FrameLayout>
 </FrameLayout>

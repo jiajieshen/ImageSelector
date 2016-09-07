@@ -24,7 +24,7 @@
     <CheckBox
         android:id="@+id/is_cb_image_state"
         android:layout_width="wrap_content"
-        android:theme="@style/ImageSelectorCheckBox"
+        android:theme="@style/ImageSelectorItemCheckBox"
         android:layout_height="wrap_content"
         android:layout_gravity="right" />
 </FrameLayout>

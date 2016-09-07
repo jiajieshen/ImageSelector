@@ -4,7 +4,7 @@
     android:id="@+id/is_parent_folder_category"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#BF000000"
+    android:background="@color/is_color_BF000000"
     android:orientation="vertical">
 
     <Button

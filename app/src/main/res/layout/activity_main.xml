@@ -102,7 +102,7 @@
             android:id="@+id/show_preview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checkedButton="@+id/show"
+            android:checkedButton="@+id/preview"
             android:orientation="vertical">
 
             <RadioButton
