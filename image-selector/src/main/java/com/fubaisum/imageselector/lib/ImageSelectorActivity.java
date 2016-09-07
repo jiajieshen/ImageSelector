@@ -3,7 +3,9 @@ package com.fubaisum.imageselector.lib;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -70,6 +72,10 @@ public class ImageSelectorActivity extends AppCompatActivity
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.is_activity_image_selector);
         getWindow().setBackgroundDrawable(null);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.BLACK);
+        }
 
         Intent intent = getIntent();
         configuration = intent.getParcelableExtra(ImageSelector.EXTRA_CONFIGURATION);
