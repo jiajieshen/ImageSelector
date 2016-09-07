@@ -1,5 +1,5 @@
 <resources>
-    <string name="is_gallery">Gallery</string>
+    <string name="is_gallery">Images</string>
     <string name="is_action_done">Done</string>
     <string name="is_action_button_string">%1$s(%2$d/%3$d)</string>
     <string name="is_all_images">All Images</string>
