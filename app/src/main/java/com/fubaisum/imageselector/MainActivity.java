@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE_SELECTOR = 0x100;
 
-    private RadioGroup mChoiceMode, mShowCamera;
+    private RadioGroup mChoiceMode, mShowCamera, mShowPreview;
     private EditText mRequestNum;
     private TextView mResultText;
 
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         mChoiceMode = (RadioGroup) findViewById(R.id.choice_mode);
         mShowCamera = (RadioGroup) findViewById(R.id.show_camera);
+        mShowPreview = (RadioGroup) findViewById(R.id.show_preview);
         mRequestNum = (EditText) findViewById(R.id.request_num);
         mResultText = (TextView) findViewById(R.id.result);
 
@@ -64,7 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void launchImageSelector() {
 
+        boolean isMultipleChoiceMode = mChoiceMode.getCheckedRadioButtonId() != R.id.single;
         boolean showCamera = mShowCamera.getCheckedRadioButtonId() == R.id.show;
+        boolean showPreview = mShowPreview.getCheckedRadioButtonId() == R.id.preview;
         int maxNum = 9;
         if (!TextUtils.isEmpty(mRequestNum.getText())) {
             try {
@@ -73,12 +76,12 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        boolean isMultipleChoiceMode = mChoiceMode.getCheckedRadioButtonId() != R.id.single;
 
         new ImageSelector.Builder()
                 .setMultipleChoiceMode(isMultipleChoiceMode)
                 .setMaxSelectableSize(maxNum)
                 .setShowCamera(showCamera)
+                .setPreviewEnable(showPreview)
                 .build()
                 .launchForActivityCallback(MainActivity.this, REQUEST_IMAGE_SELECTOR);
     }

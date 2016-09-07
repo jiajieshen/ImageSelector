@@ -2,6 +2,7 @@
 <resources>
     <color name="is_color_accent">#45c01a</color>
     <color name="is_color_000000">#000000</color>
+    <color name="is_color_262626">#262626</color>
     <color name="is_color_21282c">#21282C</color>
     <color name="is_color_343535">#343535</color>
     <color name="is_color_999999">#999999</color>

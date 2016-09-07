@@ -8,6 +8,7 @@
     <string name="max_select_amount">Max Selected Amount</string>
     <string name="hint_default_amount">default amount is 9</string>
     <string name="enable_camera">Enable Camera</string>
+    <string name="enable_preview">Enable Preview</string>
     <string name="enable">Enable</string>
     <string name="disable">Disable</string>
     <string name="go_select">Select</string>

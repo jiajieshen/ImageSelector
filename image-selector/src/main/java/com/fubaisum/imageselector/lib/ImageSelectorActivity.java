@@ -127,6 +127,7 @@ public class ImageSelectorActivity extends AppCompatActivity
         imageItemAdapter.setMultipleChoiceMode(configuration.isMultipleChoiceMode);
         imageItemAdapter.setMaxSelectableSize(configuration.maxSelectableSize);
         imageItemAdapter.setCanShowCamera(configuration.isShowCamera);
+        imageItemAdapter.setCanPreview(configuration.isPreviewEnable);
         imageItemAdapter.setOnItemClickListener(this);
 
         imageRecyclerView.setAdapter(imageItemAdapter);
@@ -339,7 +340,8 @@ public class ImageSelectorActivity extends AppCompatActivity
 
     @Override
     public void onClickImageItem(ImageItem imageItem) {
-
+        Intent intent = new Intent(this, ImagePreviewActivity.class);
+        startActivity(intent);
     }
 
     @Override

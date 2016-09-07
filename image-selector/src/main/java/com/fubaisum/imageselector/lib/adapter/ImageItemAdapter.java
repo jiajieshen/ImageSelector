@@ -5,7 +5,6 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +34,7 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private boolean isGlideSkipMemoryCache;
 
     private boolean isCanShowCamera;// the camera configuration
+    private boolean isCanPreview;
     private boolean isMultipleChoiceMode;
     private int maxSelectableSize;
     private int crrSelectedSize;
@@ -54,6 +54,10 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public void setMaxSelectableSize(int maxSelectableSize) {
         this.maxSelectableSize = maxSelectableSize;
+    }
+
+    public void setCanPreview(boolean canPreview) {
+        isCanPreview = canPreview;
     }
 
     public void setCanShowCamera(boolean canShowCamera) {
@@ -149,8 +153,11 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             @Override
             public void onClick(View v) {
                 int position = imageItemViewHolder.getAdapterPosition();
-                // TODO: If not previewing the image, invoke the onSelectImageItem() method.
-                onSelectImageItem(null, position);
+                if (isCanPreview) {
+                    onClickImageItem(position);
+                } else {
+                    onSelectImageItem(null, position);
+                }
             }
         });
         imageItemViewHolder.cbState.setOnClickListener(new View.OnClickListener() {

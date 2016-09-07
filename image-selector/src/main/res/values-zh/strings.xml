@@ -2,6 +2,7 @@
 <resources>
     <string name="is_gallery">相册</string>
     <string name="is_action_done">完成</string>
+    <string name="is_select">选择</string>
     <string name="is_action_button_string">%1$s(%2$d/%3$d)</string>
     <string name="is_all_images">所有图片</string>
     <string name="is_photo_unit">张</string>
