@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/is_color_21282c">
@@ -9,6 +9,35 @@
         android:id="@+id/is_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/is_preview_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="top"
+        android:background="@color/is_color_BF000000"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:elevation="4dp">
+
+        <Button
+            android:id="@+id/is_btn_preview_toolbar_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/is_sel_toolbar_btn"
+            android:minHeight="1dp"
+            android:minWidth="1dp"
+            android:paddingBottom="6dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="6dp"
+            android:text="@string/is_action_done"
+            android:textAllCaps="false"
+            android:textColor="@color/is_toolbar_btn_text_color"
+            android:textSize="14sp" />
+
+    </android.support.v7.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/is_parent_preview_bottom"
@@ -19,7 +48,7 @@
         android:orientation="horizontal">
 
         <CheckBox
-            android:id="@+id/is_cb_image_state"
+            android:id="@+id/is_cb_preview_image_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"

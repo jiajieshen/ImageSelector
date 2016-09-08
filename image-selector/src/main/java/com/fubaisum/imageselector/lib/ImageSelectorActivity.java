@@ -29,6 +29,7 @@ import com.fubaisum.imageselector.lib.adapter.ImageItemAdapter;
 import com.fubaisum.imageselector.lib.event.SelectCompleteEvent;
 import com.fubaisum.imageselector.lib.model.FolderItem;
 import com.fubaisum.imageselector.lib.model.ImageItem;
+import com.fubaisum.imageselector.lib.model.PreviewStateInfo;
 import com.fubaisum.imageselector.lib.util.FileUtils;
 import com.fubaisum.imageselector.lib.widget.ItemOffsetDecoration;
 
@@ -339,9 +340,14 @@ public class ImageSelectorActivity extends AppCompatActivity
     }
 
     @Override
-    public void onClickImageItem(ImageItem imageItem) {
-        Intent intent = new Intent(this, ImagePreviewActivity.class);
-        startActivity(intent);
+    public void onClickImageItem(int position) {
+        ArrayList<ImageItem> imageItemList = (ArrayList<ImageItem>) imageItemAdapter.getItems();
+
+        PreviewStateInfo stateInfo = new PreviewStateInfo();
+        stateInfo.maxSelectableSize = configuration.maxSelectableSize;
+        stateInfo.crrSelectedSize = imageItemAdapter.getCurrentSelectedSize();
+
+        ImagePreviewActivity.launch(this, imageItemList, position, stateInfo);
     }
 
     @Override
@@ -352,9 +358,11 @@ public class ImageSelectorActivity extends AppCompatActivity
             return;
         }
 
-        int maxSize = configuration.maxSelectableSize;
         if (configuration.isMultipleChoiceMode) {
-            btnDone.setText(getString(R.string.is_action_button_string, getString(R.string.is_action_done), crrSelectedSize, maxSize));
+            int maxSize = configuration.maxSelectableSize;
+            btnDone.setText(getString(R.string.is_action_button_string, crrSelectedSize, maxSize));
+        } else {
+            btnDone.setText(R.string.is_action_done);
         }
         btnDone.setEnabled(true);
     }

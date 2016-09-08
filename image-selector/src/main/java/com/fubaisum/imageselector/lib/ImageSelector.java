@@ -64,7 +64,7 @@ public class ImageSelector {
         }
 
         public ImageSelector build() {
-            if (!config.isMultipleChoiceMode) {
+            if (!config.isMultipleChoiceMode || config.maxSelectableSize == 1) {
                 config.maxSelectableSize = 1;
             } else {
                 if (config.maxSelectableSize <= 0) {

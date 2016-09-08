@@ -69,8 +69,30 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.isShowCamera = isCanShowCamera && isExpectShowCamera;
     }
 
+    public List<ImageItem> getItems() {
+        return items;
+    }
+
     public int getCurrentSelectedSize() {
         return crrSelectedSize;
+    }
+
+    /**
+     * Find image item in current image list.
+     *
+     * @return -1 when not found
+     */
+    public int findLastSelectedPosition() {
+        if (lastSelectedItem == null) {
+            return -1;
+        }
+        int size = items.size();
+        for (int i = 0; i < size; i++) {
+            if (items.get(i) == lastSelectedItem) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -174,9 +196,9 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (position < 0 || position >= getItemCount()) {
             return;
         }
-        ImageItem imageItem = items.get(isShowCamera ? position - 1 : position);
+        int realPosition = isShowCamera ? position - 1 : position;
         if (onItemClickListener != null) {
-            onItemClickListener.onClickImageItem(imageItem);
+            onItemClickListener.onClickImageItem(realPosition);
         }
     }
 
@@ -231,7 +253,7 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             // refresh last selected item view
             if (lastSelectedItem != null) {
                 lastSelectedItem.isSelected = false;
-                int lastSelectedPosition = findPositionFromImageList(lastSelectedItem);
+                int lastSelectedPosition = findLastSelectedPosition();
                 if (lastSelectedPosition != -1) {
                     notifyItemChanged(isShowCamera ? lastSelectedPosition + 1 : lastSelectedPosition);
                 }
@@ -248,21 +270,6 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (onItemClickListener != null) {
             onItemClickListener.onSelectImageItem(crrSelectedSize);
         }
-    }
-
-    /**
-     * Find image item in current image list.
-     *
-     * @return -1 when not found
-     */
-    private int findPositionFromImageList(ImageItem target) {
-        int size = items.size();
-        for (int i = 0; i < size; i++) {
-            if (items.get(i) == target) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     /**
@@ -313,7 +320,7 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         void onClickCameraItem();
 
-        void onClickImageItem(ImageItem imageItem);
+        void onClickImageItem(int position);
 
         void onSelectImageItem(int crrSelectedNumber);
     }
