@@ -49,6 +49,7 @@ public class ImageSelectorActivity extends AppCompatActivity
         ImageItemAdapter.OnItemClickListener, PermissionHelper.OnPermissionListener {
 
     private static final int REQUEST_CAMERA = 0x1001;
+    private static final int REQUEST_PREVIEW = 0x1002;
 
     private Button btnDone;
     private ImageItemAdapter imageItemAdapter;
@@ -151,7 +152,7 @@ public class ImageSelectorActivity extends AppCompatActivity
         if (viewId == R.id.is_btn_folder_category) {
             showFolderBottomSheetDialog();
         } else if (viewId == R.id.is_btn_toolbar_done) {
-            executeCallback();
+            executeCallback(getSelectedImagePathList());
         }
     }
 
@@ -180,24 +181,6 @@ public class ImageSelectorActivity extends AppCompatActivity
         });
     }
 
-    private void executeCallback() {
-        ArrayList<String> pathList = getSelectedImagePathList();
-        if (configuration.isActivityCallback) {
-            Intent intent = new Intent();
-            intent.putStringArrayListExtra(ImageSelector.EXTRA_RESULT_LIST, pathList);
-            setResult(RESULT_OK, intent);
-        } else if (configuration.isEventBusCallback) {
-            try {
-                Class.forName("org.greenrobot.eventbus.EventBus");
-                SelectCompleteEvent event = new SelectCompleteEvent(pathList);
-                EventBus.getDefault().post(event);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        finish();
-    }
-
     @NonNull
     private ArrayList<String> getSelectedImagePathList() {
         int crrSelectedSize = imageItemAdapter.getCurrentSelectedSize();
@@ -214,6 +197,23 @@ public class ImageSelectorActivity extends AppCompatActivity
             }
         }
         return pathList;
+    }
+
+    private void executeCallback(ArrayList<String> pathList) {
+        if (configuration.isActivityCallback) {
+            Intent intent = new Intent();
+            intent.putStringArrayListExtra(ImageSelector.EXTRA_RESULT_LIST, pathList);
+            setResult(RESULT_OK, intent);
+        } else if (configuration.isEventBusCallback) {
+            try {
+                Class.forName("org.greenrobot.eventbus.EventBus");
+                SelectCompleteEvent event = new SelectCompleteEvent(pathList);
+                EventBus.getDefault().post(event);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        finish();
     }
 
     private void loadImageWithCheck() {
@@ -311,25 +311,56 @@ public class ImageSelectorActivity extends AppCompatActivity
         permissionHelper.onRequestPermissionsResult(requestCode, grantResults);
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CAMERA) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (mTmpFile != null) {
-                    // notify system the image has change
-                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mTmpFile)));
-                }
-            } else {
-                // delete tmp file
-                while (mTmpFile != null && mTmpFile.exists()) {
-                    boolean success = mTmpFile.delete();
-                    if (success) {
-                        mTmpFile = null;
-                    }
+            handleCallbackFromCamera(resultCode);
+        } else if (requestCode == REQUEST_PREVIEW) {
+            handleCallbackFromPreview(resultCode, data);
+        }
+    }
+
+    /**
+     * handle the callback from camera
+     */
+    private void handleCallbackFromCamera(int resultCode) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (mTmpFile != null) {
+                // notify system the image has change
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mTmpFile)));
+                // callback
+                ArrayList<String> pathList = new ArrayList<>(1);
+                pathList.add(mTmpFile.getAbsolutePath());
+                executeCallback(pathList);
+            }
+        } else {
+            // delete tmp file
+            while (mTmpFile != null && mTmpFile.exists()) {
+                boolean success = mTmpFile.delete();
+                if (success) {
+                    mTmpFile = null;
                 }
             }
+        }
+    }
+
+    /**
+     * handle the callback from preview activity
+     */
+    private void handleCallbackFromPreview(int resultCode, Intent data) {
+        if (data == null) {
+            return;
+        }
+        if (resultCode == RESULT_CANCELED) {
+            if (configuration.isMultipleChoiceMode) {
+                int[] selectedPositions = data.getIntArrayExtra(ImagePreviewActivity.EXTRA_SELECTED_POSITIONS);
+                imageItemAdapter.setSelectedPositions(selectedPositions);
+                // update "Done" button
+                updateCurrentSelectedSize(imageItemAdapter.getCurrentSelectedSize());
+            }
+        } else if (resultCode == RESULT_OK) {
+
         }
     }
 
@@ -347,11 +378,11 @@ public class ImageSelectorActivity extends AppCompatActivity
         stateInfo.maxSelectableSize = configuration.maxSelectableSize;
         stateInfo.crrSelectedSize = imageItemAdapter.getCurrentSelectedSize();
 
-        ImagePreviewActivity.launch(this, imageItemList, position, stateInfo);
+        ImagePreviewActivity.launch(this, REQUEST_PREVIEW, imageItemList, position, stateInfo);
     }
 
     @Override
-    public void onSelectImageItem(int crrSelectedSize) {
+    public void updateCurrentSelectedSize(int crrSelectedSize) {
         if (crrSelectedSize == 0) {
             btnDone.setText(R.string.is_action_done);
             btnDone.setEnabled(false);

@@ -7,6 +7,10 @@ import android.text.TextUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import static android.os.Environment.MEDIA_MOUNTED;
 
@@ -19,19 +23,22 @@ public class FileUtils {
     private static final String JPEG_FILE_SUFFIX = ".jpg";
 
     public static File createTmpFile(Context context) throws IOException {
-        File dir = null;
+        File dir;
         if (TextUtils.equals(Environment.getExternalStorageState(), Environment.MEDIA_MOUNTED)) {
             dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+            dir = new File(dir, "Camera");
             if (!dir.exists()) {
-                dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/Camera");
-                if (!dir.exists()) {
+                if (!dir.mkdirs()) {
                     dir = getCacheDirectory(context, true);
                 }
             }
         } else {
             dir = getCacheDirectory(context, true);
         }
-        return File.createTempFile(JPEG_FILE_PREFIX, JPEG_FILE_SUFFIX, dir);
+        Calendar calendar = Calendar.getInstance();
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_", Locale.getDefault());
+        String date = dateFormat.format(calendar.getTime());
+        return File.createTempFile(JPEG_FILE_PREFIX + date, JPEG_FILE_SUFFIX, dir);
     }
 
 

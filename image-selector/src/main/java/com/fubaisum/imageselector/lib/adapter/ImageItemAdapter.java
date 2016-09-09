@@ -77,6 +77,32 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return crrSelectedSize;
     }
 
+    public void setSelectedPositions(int[] selectedPositions) {
+        if (selectedPositions == null) {
+            return;
+        }
+        ImageItem image;
+        int j = 0;
+        int imageListSize = items.size();
+        for (int i = 0; i < imageListSize; i++) {// 这里需要全遍历来取消某些旧的选择
+            image = items.get(i);
+            if (j < selectedPositions.length && i == selectedPositions[j]) {
+                if (!image.isSelected) {
+                    image.isSelected = true;
+                    notifyItemChanged(isShowCamera ? i + 1 : i);
+                    crrSelectedSize++;
+                }
+                j++;
+            } else {
+                if (image.isSelected) {
+                    image.isSelected = false;
+                    notifyItemChanged(isShowCamera ? i + 1 : i);
+                    crrSelectedSize--;
+                }
+            }
+        }
+    }
+
     /**
      * Find image item in current image list.
      *
@@ -235,7 +261,7 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
         // notify observer
         if (onItemClickListener != null) {
-            onItemClickListener.onSelectImageItem(crrSelectedSize);
+            onItemClickListener.updateCurrentSelectedSize(crrSelectedSize);
         }
     }
 
@@ -268,7 +294,7 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         // notify observer
         if (onItemClickListener != null) {
-            onItemClickListener.onSelectImageItem(crrSelectedSize);
+            onItemClickListener.updateCurrentSelectedSize(crrSelectedSize);
         }
     }
 
@@ -322,7 +348,7 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         void onClickImageItem(int position);
 
-        void onSelectImageItem(int crrSelectedNumber);
+        void updateCurrentSelectedSize(int crrSelectedNumber);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

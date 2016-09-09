@@ -30,6 +30,8 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class ImagePreviewActivity extends AppCompatActivity
         implements View.OnClickListener, PhotoViewAttacher.OnViewTapListener {
 
+    public static final String EXTRA_SELECTED_POSITIONS = "extra_selected_positions";
+
     private static final String ARG_IMAGE_ITEM_LIST = "arg_image_item_list";
     private static final String ARG_IMAGE_ITEM_POSITION = "arg_image_item_position";
     private static final String ARG_PREVIEW_STATE_INFO = "arg_preview_state_info";
@@ -43,10 +45,8 @@ public class ImagePreviewActivity extends AppCompatActivity
     private List<ImageItem> imageItemList;
     private PreviewStateInfo stateInfo;
 
-    public static void launch(Activity activity,
-                              ArrayList<ImageItem> imageUrlList,
-                              int position,
-                              PreviewStateInfo stateInfo) {
+    public static void launch(Activity activity, int requestCode,
+                              ArrayList<ImageItem> imageUrlList, int position, PreviewStateInfo stateInfo) {
         if (imageUrlList == null || imageUrlList.size() == 0) {
             return;
         } else if (position < 0 || position >= imageUrlList.size()) {
@@ -56,7 +56,7 @@ public class ImagePreviewActivity extends AppCompatActivity
         intent.putParcelableArrayListExtra(ARG_IMAGE_ITEM_LIST, imageUrlList);
         intent.putExtra(ARG_IMAGE_ITEM_POSITION, position);
         intent.putExtra(ARG_PREVIEW_STATE_INFO, stateInfo);
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, requestCode);
     }
 
     @Override
@@ -202,10 +202,45 @@ public class ImagePreviewActivity extends AppCompatActivity
     }
 
     @Override
+    public void onBackPressed() {
+
+        int[] selectedPositions = getSelectedPositions();
+        Intent intent = new Intent();
+        if (selectedPositions != null) {
+            intent.putExtra(EXTRA_SELECTED_POSITIONS, selectedPositions);
+        }
+        setResult(RESULT_CANCELED, intent);
+
+        finish();
+    }
+
+    private int[] getSelectedPositions() {
+        if (!stateInfo.isMultipleChoiceMode()) {
+            return null;
+        }
+        if (stateInfo.crrSelectedSize == 0) {
+            return null;
+        }
+        int[] selectedPositions = new int[stateInfo.crrSelectedSize];
+        int j = 0;
+        int imageItemListSize = imageItemList.size();
+        for (int i = 0; i < imageItemListSize; i++) {
+            if (imageItemList.get(i).isSelected) {
+                selectedPositions[j] = i;
+                j++;
+                if (j >= stateInfo.crrSelectedSize) {
+                    break;
+                }
+            }
+        }
+
+        return selectedPositions;
+    }
+
+    @Override
     public void onClick(View v) {
 
     }
-
 
     @Override
     public void onViewTap(View view, float x, float y) {
