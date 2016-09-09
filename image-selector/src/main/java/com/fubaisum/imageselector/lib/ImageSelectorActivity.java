@@ -360,7 +360,21 @@ public class ImageSelectorActivity extends AppCompatActivity
                 updateCurrentSelectedSize(imageItemAdapter.getCurrentSelectedSize());
             }
         } else if (resultCode == RESULT_OK) {
-
+            if (configuration.isMultipleChoiceMode) {
+                int[] selectedPositions = data.getIntArrayExtra(ImagePreviewActivity.EXTRA_SELECTED_POSITIONS);
+                imageItemAdapter.setSelectedPositions(selectedPositions);
+                // update "Done" button
+                updateCurrentSelectedSize(imageItemAdapter.getCurrentSelectedSize());
+                // callback
+                ArrayList<String> pathList = getSelectedImagePathList();
+                executeCallback(pathList);
+            } else {
+                // radio finish from ImagePreviewActivity
+                String path = data.getStringExtra(ImagePreviewActivity.EXTRA_RADIO_SELECTED_PATH);
+                ArrayList<String> pathList = new ArrayList<>(1);
+                pathList.add(path);
+                executeCallback(pathList);
+            }
         }
     }
 

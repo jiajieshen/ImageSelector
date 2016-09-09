@@ -30,6 +30,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class ImagePreviewActivity extends AppCompatActivity
         implements View.OnClickListener, PhotoViewAttacher.OnViewTapListener {
 
+    public static final String EXTRA_RADIO_SELECTED_PATH = "extra_radio_selected_path";
     public static final String EXTRA_SELECTED_POSITIONS = "extra_selected_positions";
 
     private static final String ARG_IMAGE_ITEM_LIST = "arg_image_item_list";
@@ -100,6 +101,7 @@ public class ImagePreviewActivity extends AppCompatActivity
             cbSelected.setChecked(imageItemList.get(displayPosition).isSelected);
             parentBottom.setVisibility(View.VISIBLE);
         } else {
+            btnDone.setEnabled(true);
             parentBottom.setVisibility(View.GONE);
         }
     }
@@ -239,11 +241,30 @@ public class ImagePreviewActivity extends AppCompatActivity
 
     @Override
     public void onClick(View v) {
+        if (stateInfo.isMultipleChoiceMode()) {
+            int[] selectedPositions = getSelectedPositions();
+            Intent intent = new Intent();
+            if (selectedPositions != null) {
+                intent.putExtra(EXTRA_SELECTED_POSITIONS, selectedPositions);
+            }
+            setResult(RESULT_OK, intent);
+        } else {
+            int displayPosition = viewPager.getCurrentItem();
+            String path = imageItemList.get(displayPosition).path;
+            Intent intent = new Intent();
+            intent.putExtra(EXTRA_RADIO_SELECTED_PATH, path);
+            setResult(RESULT_OK, intent);
+        }
 
+        finish();
     }
 
     @Override
     public void onViewTap(View view, float x, float y) {
+        toggleDisplayFloatLayout();
+    }
+
+    private void toggleDisplayFloatLayout() {
         boolean isVisible = toolbar.getVisibility() == View.VISIBLE;
         isVisible = !isVisible;
         toolbar.setVisibility(isVisible ? View.VISIBLE : View.GONE);
