@@ -1,5 +1,18 @@
 # ImageSelector
 
+# Add repository 
+```gradle
+repositories {
+    maven {
+        url 'https://dl.bintray.com/fubaisum/maven/'
+    }
+}
+```
+# Add dependency
+```gradle
+        compile 'com.scausum.imageselector:image-selector:0.1.0'
+```
+
 # USAGE
 ## launch
 ```java
