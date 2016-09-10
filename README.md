@@ -10,7 +10,7 @@ repositories {
 ```
 # Add dependency
 ```gradle
-        compile 'com.scausum.imageselector:image-selector:0.1.0'
+        compile 'com.scausum.imageselector:image-selector:0.1.1'
 ```
 
 # USAGE
