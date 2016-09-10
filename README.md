@@ -1,6 +1,6 @@
 # ImageSelector
 
-# Add repository 
+# Add repository
 ```gradle
 repositories {
     maven {
