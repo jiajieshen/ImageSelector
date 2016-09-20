@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/is_color_343535"
     android:clickable="true"
-    android:foreground="?selectableItemBackground">
+    android:foreground="?selectableItemBackgroundBorderless">
 
     <TextView
         android:layout_width="wrap_content"
