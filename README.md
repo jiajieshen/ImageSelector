@@ -3,9 +3,8 @@
 # Add repository
 ```gradle
 repositories {
-    maven {
-        url 'https://dl.bintray.com/fubaisum/maven/'
-    }
+    maven { url "https://jitpack.io" }
+    maven { url 'https://dl.bintray.com/fubaisum/maven/' }
 }
 ```
 # Add dependency
