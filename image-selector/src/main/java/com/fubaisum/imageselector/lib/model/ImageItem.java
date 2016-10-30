@@ -8,9 +8,9 @@ import android.os.Parcelable;
  */
 public class ImageItem implements Parcelable {
 
-    // The absolute path in file system.
+    // The absolute path
     public String path;
-    // The status if this image item is selected.
+    // The status if image item is selected
     public boolean isSelected;
 
     public ImageItem(String path) {

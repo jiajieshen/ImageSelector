@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
-import com.fubaisum.imageselector.lib.adapter.ViewPagerAdapter;
 import com.fubaisum.imageselector.lib.model.ImageItem;
 import com.fubaisum.imageselector.lib.model.PreviewStateInfo;
 import com.fubaisum.imageselector.lib.widget.HackyViewPager;

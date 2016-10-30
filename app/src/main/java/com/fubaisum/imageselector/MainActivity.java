@@ -11,7 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.fubaisum.imageselector.lib.ImageSelector;
-import com.fubaisum.imageselector.lib.event.SelectCompleteEvent;
+import com.fubaisum.imageselector.lib.event.ImageSelectEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSelectComplete(SelectCompleteEvent event) {
-        ArrayList<String> pathList = event.getSelectedPathList();
+    public void onSelectComplete(ImageSelectEvent event) {
+        ArrayList<String> pathList = event.getImagePathList();
         printResult(pathList);
     }
 

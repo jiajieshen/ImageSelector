@@ -59,7 +59,7 @@ class LoadImageBiz {
         FolderItem allImagesFolderItem = new FolderItem();
         allImagesFolderItem.name = activity.getString(R.string.is_all_images);
         allImagesFolderItem.path = "/sdcard";
-        allImagesFolderItem.imageItemList = new ArrayList<>(1);
+        allImagesFolderItem.imageList = new ArrayList<>(1);
         allImagesFolderItem.isSelected = true;
         folderItemList.add(allImagesFolderItem);
     }
@@ -139,17 +139,17 @@ class LoadImageBiz {
                     folder = new FolderItem();
                     folder.name = folderFile.getName();
                     folder.path = folderPath;
-                    folder.imageItemList = new ArrayList<>();
+                    folder.imageList = new ArrayList<>();
                     // add new folder item into folder item list.
                     folderItemList.add(folder);
                 }
                 ImageItem newImage = new ImageItem(imagePath);
-                folder.imageItemList.add(newImage);
+                folder.imageList.add(newImage);
                 fullList.add(newImage);
             }
             data.close();
             // set full list into the first folder item
-            folderItemList.get(0).imageItemList = fullList;
+            folderItemList.get(0).imageList = fullList;
         }
 
     };

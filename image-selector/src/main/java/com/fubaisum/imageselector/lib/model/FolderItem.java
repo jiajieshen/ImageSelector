@@ -11,9 +11,9 @@ public class FolderItem {
     public String path;
     // The file name
     public String name;
-    // The imageItemList under this folder
-    public List<ImageItem> imageItemList;
-    // The status if this folder item is selected
+    // The image items under folder
+    public List<ImageItem> imageList;
+    // The status if folder item is selected
     public boolean isSelected;
 
     @Override
@@ -21,7 +21,7 @@ public class FolderItem {
         return "FolderItem{" +
                 "path='" + path + '\'' +
                 ", name='" + name + '\'' +
-                ", imageItemList=" + imageItemList +
+                ", imageList=" + imageList +
                 ", isSelected=" + isSelected +
                 '}';
     }

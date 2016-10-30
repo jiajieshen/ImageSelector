@@ -1,4 +1,4 @@
-package com.fubaisum.imageselector.lib.adapter;
+package com.fubaisum.imageselector.lib;
 
 import android.app.Activity;
 import android.support.v4.view.PagerAdapter;

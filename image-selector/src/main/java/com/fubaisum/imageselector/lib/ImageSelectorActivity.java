@@ -24,9 +24,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.fubaisum.imageselector.lib.adapter.FolderItemAdapter;
-import com.fubaisum.imageselector.lib.adapter.ImageItemAdapter;
-import com.fubaisum.imageselector.lib.event.SelectCompleteEvent;
+import com.fubaisum.imageselector.lib.event.ImageSelectEvent;
 import com.fubaisum.imageselector.lib.model.FolderItem;
 import com.fubaisum.imageselector.lib.model.ImageItem;
 import com.fubaisum.imageselector.lib.model.PreviewStateInfo;
@@ -187,7 +185,7 @@ public class ImageSelectorActivity extends AppCompatActivity
         ArrayList<String> pathList = new ArrayList<>(crrSelectedSize);
 
         FolderItem firstFolderItem = folderItemAdapter.getItems().get(0);
-        List<ImageItem> fullList = firstFolderItem.imageItemList;
+        List<ImageItem> fullList = firstFolderItem.imageList;
         for (ImageItem image : fullList) {
             if (image.isSelected) {
                 pathList.add(image.path);
@@ -207,7 +205,7 @@ public class ImageSelectorActivity extends AppCompatActivity
         } else if (configuration.isEventBusCallback) {
             try {
                 Class.forName("org.greenrobot.eventbus.EventBus");
-                SelectCompleteEvent event = new SelectCompleteEvent(pathList);
+                ImageSelectEvent event = new ImageSelectEvent(pathList);
                 EventBus.getDefault().post(event);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -266,7 +264,7 @@ public class ImageSelectorActivity extends AppCompatActivity
         folderItemAdapter.notifyDataSetChanged();
 
         FolderItem displayItem = items.get(0);
-        imageItemAdapter.setItems(displayItem.imageItemList, true);
+        imageItemAdapter.setItems(displayItem.imageList, true);
         imageItemAdapter.notifyDataSetChanged();
 
         btnFolderCategory.setText(displayItem.name);
@@ -416,7 +414,7 @@ public class ImageSelectorActivity extends AppCompatActivity
     public void onClickFolderItem(FolderItem folderItem) {
         boolean isExpectCamera = folderItemAdapter.isFullImageListFolderItem(folderItem);
         // refresh image list
-        imageItemAdapter.setItems(folderItem.imageItemList, isExpectCamera);
+        imageItemAdapter.setItems(folderItem.imageList, isExpectCamera);
         imageItemAdapter.notifyDataSetChanged();
         // collapsed the bottom sheet
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);

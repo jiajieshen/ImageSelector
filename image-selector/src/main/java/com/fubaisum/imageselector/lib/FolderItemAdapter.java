@@ -1,4 +1,4 @@
-package com.fubaisum.imageselector.lib.adapter;
+package com.fubaisum.imageselector.lib;
 
 import android.app.Activity;
 import android.os.Build;
@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.fubaisum.imageselector.lib.R;
 import com.fubaisum.imageselector.lib.model.FolderItem;
 
 import java.util.List;
@@ -95,9 +94,9 @@ public class FolderItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         viewHolder.tvName.setText(item.name);
         viewHolder.tvPath.setText(item.path);
         viewHolder.ivState.setVisibility(item.isSelected ? View.VISIBLE : View.INVISIBLE);
-        viewHolder.tvSize.setText(activity.getString(R.string.is_photo_size, item.imageItemList.size()));
+        viewHolder.tvSize.setText(activity.getString(R.string.is_photo_size, item.imageList.size()));
         Glide.with(activity)
-                .load(position == 0 ? R.mipmap.is_thumbnail_default : item.imageItemList.get(0).path)
+                .load(position == 0 ? R.mipmap.is_thumbnail_default : item.imageList.get(0).path)
                 .asBitmap()
                 .error(R.mipmap.is_thumbnail_default)
                 .skipMemoryCache(isGlideSkipMemoryCache)
