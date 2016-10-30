@@ -12,11 +12,13 @@
         <activity
             android:name=".ImageSelectorActivity"
             android:configChanges="screenSize|orientation"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".ImagePreviewActivity"
             android:configChanges="screenSize|orientation"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
     </application>
