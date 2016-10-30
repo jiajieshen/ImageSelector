@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPreviewEnable(showPreview)
                 .build()
                 .launchForActivityCallback(MainActivity.this, REQUEST_IMAGE_SELECTOR);
+//                .launchForEventBusCallback(MainActivity.this) // optional
     }
 
     @Override
