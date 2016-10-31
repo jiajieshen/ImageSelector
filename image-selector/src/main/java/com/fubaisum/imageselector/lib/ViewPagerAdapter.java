@@ -14,7 +14,7 @@ import java.util.List;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-public class ViewPagerAdapter extends PagerAdapter {
+class ViewPagerAdapter extends PagerAdapter {
 
     private Activity activity;
     private List<ImageItem> items;

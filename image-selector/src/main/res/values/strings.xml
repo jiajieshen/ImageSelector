@@ -5,7 +5,7 @@
     <string name="is_action_button_string">Done(%1$d/%2$d)</string>
     <string name="is_all_images">All Images</string>
     <string name="is_photo_unit">Shot</string>
-    <string name="is_photo_size">%1$sShot</string>
+    <string name="is_photo_size">%1$dShot</string>
     <string name="is_msg_amount_limit">Select images amount is limit</string>
     <string name="is_msg_no_camera">No system camera found</string>
     <string name="is_error_image_not_exist">Image error</string>
@@ -16,5 +16,5 @@
     <string name="is_permission_rationale_read_storage">Storage read permission is needed to load the images.</string>
     <string name="is_permission_rationale_write_storage">Storage write permission is needed to save the image.</string>
     <string name="is_permission_rationale_camera">Camera is needed to take photo.</string>
-    <string name="is_preview_toolbar_title">%1$s/%2$s</string>
+    <string name="is_preview_toolbar_title">%1$d/%2$d</string>
 </resources>

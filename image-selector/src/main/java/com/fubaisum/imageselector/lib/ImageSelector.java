@@ -2,19 +2,82 @@ package com.fubaisum.imageselector.lib;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 /**
  * Created by sum on 8/26/16.
  */
 public class ImageSelector {
 
-    public static final String EXTRA_RESULT_LIST = "EXTRA_RESULT_LIST";
-    public static final String EXTRA_CONFIGURATION = "EXTRA_CONFIGURATION";
+    /**
+     * Extra for ImageSelectorActivity result.
+     */
+    public static final String EXTRA_IMAGE_PATH_LIST = "EXTRA_IMAGE_PATH_LIST";
 
-    private Configuration configuration;
+    private static final int DEFAULT_MAX_MULTIPLE_CHOICE_SIZE = 9;
 
-    private ImageSelector(Configuration configuration) {
-        this.configuration = configuration;
+    private static ImageSelector instance;
+
+    // feature
+    boolean isCameraEnable = true;
+    boolean isPreviewEnable = true;
+    boolean isMultipleChoice = true;
+    boolean isShowGif = false;
+    boolean isOnlyShowGif = false;
+    // other data
+    int maxSelectedSize = DEFAULT_MAX_MULTIPLE_CHOICE_SIZE;
+    // hook
+    ImageSelectorHook hook;
+
+    private ImageSelector() {
+        instance = this;
+    }
+
+    static void clearInstance() {
+        instance.hook = null;
+        instance = null;
+    }
+
+    static boolean isCameraEnable() {
+        return instance.isCameraEnable;
+    }
+
+    static boolean isPreviewEnable() {
+        return instance.isPreviewEnable;
+    }
+
+    static boolean isMultipleChoice() {
+        return instance.isMultipleChoice;
+    }
+
+    static boolean isShowGif() {
+        return instance.isShowGif;
+    }
+
+    static boolean isOnlyShowGif() {
+        return instance.isOnlyShowGif;
+    }
+
+    static int getMaxSelectedSize() {
+        return instance.maxSelectedSize;
+    }
+
+    @NonNull
+    static ImageSelectorHook getHook() {
+        if (instance.hook == null) {
+            return ImageSelectorHook.EMPTY_HOOK;
+        } else {
+            return instance.hook;
+        }
+    }
+
+    /**
+     * @param activity
+     * @param requestCode
+     */
+    public void launch(Activity activity, int requestCode) {
+        Intent intent = new Intent(activity, ImageSelectorActivity.class);
+        activity.startActivityForResult(intent, requestCode);
     }
 
     /**
@@ -22,70 +85,57 @@ public class ImageSelector {
      */
     public static class Builder {
 
-        private Configuration config;
+        private ImageSelector imageSelector;
 
         public Builder() {
-            config = new Configuration();
-            config.isShowGif = false;
-            config.isShowCamera = true;
-            config.isPreviewEnable = true;
-            config.isMultipleChoiceMode = true;
-            config.maxSelectableSize = Configuration.DEFAULT_MAX_MULTIPLE_CHOICE_COUNT;
+            imageSelector = new ImageSelector();
+        }
+
+        public Builder setCameraEnable(boolean enable) {
+            imageSelector.isCameraEnable = enable;
+            return this;
+        }
+
+        public Builder setPreviewEnable(boolean enable) {
+            imageSelector.isPreviewEnable = enable;
+            return this;
+        }
+
+        public Builder setMultipleChoice(boolean isMultipleChoice) {
+            imageSelector.isMultipleChoice = isMultipleChoice;
+            return this;
+        }
+
+        public Builder setMaxSelectedSize(int maxSelectedSize) {
+            imageSelector.maxSelectedSize = maxSelectedSize;
+            return this;
         }
 
         public Builder setShowGif(boolean isShowGif) {
-            config.isShowGif = isShowGif;
+            imageSelector.isShowGif = isShowGif;
             return this;
         }
 
-        public Builder setShowCamera(boolean isShowCamera) {
-            config.isShowCamera = isShowCamera;
+        public Builder setOnlyShowGif(boolean isOnlyShowGif) {
+            imageSelector.isOnlyShowGif = isOnlyShowGif;
             return this;
         }
 
-        public Builder setPreviewEnable(boolean isEnable) {
-            config.isPreviewEnable = isEnable;
-            return this;
-        }
-
-        public Builder setRadioChoiceMode(boolean isRadio) {
-            config.isMultipleChoiceMode = !isRadio;
-            return this;
-        }
-
-        public Builder setMultipleChoiceMode(boolean isMultipleChoice) {
-            config.isMultipleChoiceMode = isMultipleChoice;
-            return this;
-        }
-
-        public Builder setMaxSelectableSize(int maxSelectableSize) {
-            config.maxSelectableSize = maxSelectableSize;
+        public Builder setHook(ImageSelectorHook hook) {
+            imageSelector.hook = hook;
             return this;
         }
 
         public ImageSelector build() {
-            if (!config.isMultipleChoiceMode || config.maxSelectableSize == 1) {
-                config.maxSelectableSize = 1;
-            } else {
-                if (config.maxSelectableSize <= 0) {
-                    throw new IllegalStateException("The multiple choice count shouldn't be less than 0.");
+            if (imageSelector.isMultipleChoice) {
+                if (imageSelector.maxSelectedSize <= 1) {
+                    throw new IllegalStateException("The value of maxSelectedSize must be bigger than 1.");
                 }
+            } else {
+                imageSelector.maxSelectedSize = 1;
             }
-            return new ImageSelector(config);
+            return imageSelector;
         }
-    }
 
-    public void launchForActivityCallback(Activity activity, int requestCode) {
-        configuration.isActivityCallback = true;
-        Intent intent = new Intent(activity, ImageSelectorActivity.class);
-        intent.putExtra(EXTRA_CONFIGURATION, configuration);
-        activity.startActivityForResult(intent, requestCode);
-    }
-
-    public void launchForEventBusCallback(Activity activity) {
-        configuration.isEventBusCallback = true;
-        Intent intent = new Intent(activity, ImageSelectorActivity.class);
-        intent.putExtra(EXTRA_CONFIGURATION, configuration);
-        activity.startActivity(intent);
     }
 }

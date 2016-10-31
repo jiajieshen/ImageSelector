@@ -13,7 +13,6 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.fubaisum.imageselector.lib.R;
 import com.fubaisum.imageselector.lib.model.ImageItem;
 import com.fubaisum.imageselector.lib.widget.SquareImageView;
 
@@ -22,7 +21,7 @@ import java.util.List;
 /**
  * Created by sum on 8/25/16.
  */
-public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final int TYPE_CAMERA = 0;
     private final int TYPE_IMAGE = 1;
@@ -52,7 +51,7 @@ public class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.isMultipleChoiceMode = isMultipleChoice;
     }
 
-    public void setMaxSelectableSize(int maxSelectableSize) {
+    public void setMaxSelectedSize(int maxSelectableSize) {
         this.maxSelectableSize = maxSelectableSize;
     }
 

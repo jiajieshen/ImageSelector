@@ -6,7 +6,7 @@
     <string name="is_action_button_string">完成(%1$d/%2$d)</string>
     <string name="is_all_images">所有图片</string>
     <string name="is_photo_unit">张</string>
-    <string name="is_photo_size">%1$s张</string>
+    <string name="is_photo_size">%1$d张</string>
     <string name="is_msg_amount_limit">选择的图片数量已达到上限</string>
     <string name="is_msg_no_camera">没有发现系统相机</string>
     <string name="is_error_image_not_exist">创建图像文件错误</string>

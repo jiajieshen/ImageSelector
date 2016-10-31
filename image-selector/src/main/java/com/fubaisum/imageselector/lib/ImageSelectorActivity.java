@@ -24,14 +24,12 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.fubaisum.imageselector.lib.event.ImageSelectEvent;
 import com.fubaisum.imageselector.lib.model.FolderItem;
 import com.fubaisum.imageselector.lib.model.ImageItem;
 import com.fubaisum.imageselector.lib.model.PreviewStateInfo;
 import com.fubaisum.imageselector.lib.util.FileUtils;
 import com.fubaisum.imageselector.lib.widget.ItemOffsetDecoration;
 
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,20 +42,20 @@ import java.util.List;
 public class ImageSelectorActivity extends AppCompatActivity
         implements View.OnClickListener,
         FolderItemAdapter.OnItemClickListener,
-        ImageItemAdapter.OnItemClickListener, PermissionHelper.OnPermissionListener {
+        ImageItemAdapter.OnItemClickListener,
+        PermissionHelper.OnPermissionListener {
 
     private static final int REQUEST_CAMERA = 0x1001;
     private static final int REQUEST_PREVIEW = 0x1002;
 
     private Button btnDone;
     private ImageItemAdapter imageItemAdapter;
-    private Button btnFolderCategory;
+
+    private Button btnDisplayingFolder;
 
     private BottomSheetDialog bottomSheetDialog;
     private BottomSheetBehavior bottomSheetBehavior;
     private FolderItemAdapter folderItemAdapter;
-
-    private Configuration configuration;
 
     private PermissionHelper permissionHelper;
     private boolean isLoadingImageWithCheck;
@@ -77,9 +75,6 @@ public class ImageSelectorActivity extends AppCompatActivity
             getWindow().setStatusBarColor(Color.BLACK);
         }
 
-        Intent intent = getIntent();
-        configuration = intent.getParcelableExtra(ImageSelector.EXTRA_CONFIGURATION);
-
         setupToolbar();
         setupImageRecyclerView();
         setupFolderCategoryLayout();
@@ -89,6 +84,13 @@ public class ImageSelectorActivity extends AppCompatActivity
         permissionHelper.setOnPermissionListener(this);
         // load image from system database
         loadImageWithCheck();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Clear the static instance.
+        ImageSelector.clearInstance();
     }
 
     private void setupToolbar() {
@@ -124,19 +126,19 @@ public class ImageSelectorActivity extends AppCompatActivity
         imageRecyclerView.addItemDecoration(itemOffsetDecoration);
 
         imageItemAdapter = new ImageItemAdapter(this);
-        imageItemAdapter.setMultipleChoiceMode(configuration.isMultipleChoiceMode);
-        imageItemAdapter.setMaxSelectableSize(configuration.maxSelectableSize);
-        imageItemAdapter.setCanShowCamera(configuration.isShowCamera);
-        imageItemAdapter.setCanPreview(configuration.isPreviewEnable);
+        imageItemAdapter.setCanShowCamera(ImageSelector.isCameraEnable());
+        imageItemAdapter.setCanPreview(ImageSelector.isPreviewEnable());
+        imageItemAdapter.setMultipleChoiceMode(ImageSelector.isMultipleChoice());
+        imageItemAdapter.setMaxSelectedSize(ImageSelector.getMaxSelectedSize());
         imageItemAdapter.setOnItemClickListener(this);
 
         imageRecyclerView.setAdapter(imageItemAdapter);
     }
 
     private void setupFolderCategoryLayout() {
-        btnFolderCategory = (Button) findViewById(R.id.is_btn_folder_category);
-        assert btnFolderCategory != null;
-        btnFolderCategory.setOnClickListener(this);
+        btnDisplayingFolder = (Button) findViewById(R.id.is_btn_folder_category);
+        assert btnDisplayingFolder != null;
+        btnDisplayingFolder.setOnClickListener(this);
     }
 
     private void setupFolderItemAdapter() {
@@ -198,19 +200,9 @@ public class ImageSelectorActivity extends AppCompatActivity
     }
 
     private void executeCallback(ArrayList<String> pathList) {
-        if (configuration.isActivityCallback) {
-            Intent intent = new Intent();
-            intent.putStringArrayListExtra(ImageSelector.EXTRA_RESULT_LIST, pathList);
-            setResult(RESULT_OK, intent);
-        } else if (configuration.isEventBusCallback) {
-            try {
-                Class.forName("org.greenrobot.eventbus.EventBus");
-                ImageSelectEvent event = new ImageSelectEvent(pathList);
-                EventBus.getDefault().post(event);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
+        Intent intent = new Intent();
+        intent.putStringArrayListExtra(ImageSelector.EXTRA_IMAGE_PATH_LIST, pathList);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -241,11 +233,11 @@ public class ImageSelectorActivity extends AppCompatActivity
     }
 
     private void loadImage(boolean isHasPermission) {
-        final LoadImageBiz loadImageBiz = new LoadImageBiz(this, configuration);
+        final LoadImageBiz loadImageBiz = new LoadImageBiz(this);
         loadImageBiz.setOnLoadCompleteListener(new LoadImageBiz.OnLoadCompleteListener() {
             @Override
             public void onLoadComplete() {
-                List<FolderItem> items = loadImageBiz.getFolderItemList();
+                List<FolderItem> items = loadImageBiz.getFolderList();
                 onLoadImageSuccess(items);
             }
         });
@@ -267,7 +259,7 @@ public class ImageSelectorActivity extends AppCompatActivity
         imageItemAdapter.setItems(displayItem.imageList, true);
         imageItemAdapter.notifyDataSetChanged();
 
-        btnFolderCategory.setText(displayItem.name);
+        btnDisplayingFolder.setText(displayItem.name);
     }
 
     @Override
@@ -351,14 +343,14 @@ public class ImageSelectorActivity extends AppCompatActivity
             return;
         }
         if (resultCode == RESULT_CANCELED) {
-            if (configuration.isMultipleChoiceMode) {
+            if (ImageSelector.isMultipleChoice()) {
                 int[] selectedPositions = data.getIntArrayExtra(ImagePreviewActivity.EXTRA_SELECTED_POSITIONS);
                 imageItemAdapter.setSelectedPositions(selectedPositions);
                 // update "Done" button
                 updateCurrentSelectedSize(imageItemAdapter.getCurrentSelectedSize());
             }
         } else if (resultCode == RESULT_OK) {
-            if (configuration.isMultipleChoiceMode) {
+            if (ImageSelector.isMultipleChoice()) {
                 int[] selectedPositions = data.getIntArrayExtra(ImagePreviewActivity.EXTRA_SELECTED_POSITIONS);
                 imageItemAdapter.setSelectedPositions(selectedPositions);
                 // update "Done" button
@@ -387,7 +379,7 @@ public class ImageSelectorActivity extends AppCompatActivity
         ArrayList<ImageItem> imageItemList = (ArrayList<ImageItem>) imageItemAdapter.getItems();
 
         PreviewStateInfo stateInfo = new PreviewStateInfo();
-        stateInfo.maxSelectableSize = configuration.maxSelectableSize;
+        stateInfo.maxSelectableSize = ImageSelector.getMaxSelectedSize();
         stateInfo.crrSelectedSize = imageItemAdapter.getCurrentSelectedSize();
 
         ImagePreviewActivity.launch(this, REQUEST_PREVIEW, imageItemList, position, stateInfo);
@@ -401,8 +393,8 @@ public class ImageSelectorActivity extends AppCompatActivity
             return;
         }
 
-        if (configuration.isMultipleChoiceMode) {
-            int maxSize = configuration.maxSelectableSize;
+        if (ImageSelector.isMultipleChoice()) {
+            int maxSize = ImageSelector.getMaxSelectedSize();
             btnDone.setText(getString(R.string.is_action_button_string, crrSelectedSize, maxSize));
         } else {
             btnDone.setText(R.string.is_action_done);
@@ -419,7 +411,7 @@ public class ImageSelectorActivity extends AppCompatActivity
         // collapsed the bottom sheet
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         // refresh category tips
-        btnFolderCategory.setText(folderItem.name);
+        btnDisplayingFolder.setText(folderItem.name);
     }
 
 }

@@ -23,21 +23,18 @@ import java.util.List;
 class LoadImageBiz {
 
     private AppCompatActivity activity;
-    private List<FolderItem> folderItemList;
+    private List<FolderItem> folderList;
     private OnLoadCompleteListener onLoadCompleteListener;
 
-    private Configuration configuration;
-
-    public LoadImageBiz(AppCompatActivity activity, Configuration configuration) {
+    LoadImageBiz(AppCompatActivity activity) {
         this.activity = activity;
-        this.configuration = configuration;
     }
 
-    public List<FolderItem> getFolderItemList() {
-        return folderItemList;
+    List<FolderItem> getFolderList() {
+        return folderList;
     }
 
-    public void loadWithoutPermission() {
+    void loadWithoutPermission() {
 
         initFolderItemList();
 
@@ -46,7 +43,7 @@ class LoadImageBiz {
         }
     }
 
-    public void loadWithPermission() {
+    void loadWithPermission() {
 
         initFolderItemList();
 
@@ -55,13 +52,13 @@ class LoadImageBiz {
 
 
     private void initFolderItemList() {
-        folderItemList = new ArrayList<>();
-        FolderItem allImagesFolderItem = new FolderItem();
-        allImagesFolderItem.name = activity.getString(R.string.is_all_images);
-        allImagesFolderItem.path = "/sdcard";
-        allImagesFolderItem.imageList = new ArrayList<>(1);
-        allImagesFolderItem.isSelected = true;
-        folderItemList.add(allImagesFolderItem);
+        folderList = new ArrayList<>();
+        FolderItem sdcardFolder = new FolderItem();
+        sdcardFolder.name = activity.getString(R.string.is_all_images);
+        sdcardFolder.path = "/sdcard";
+        sdcardFolder.imageList = new ArrayList<>(1);
+        sdcardFolder.isSelected = true;
+        folderList.add(sdcardFolder);
     }
 
     private LoaderManager.LoaderCallbacks<Cursor> mLoaderCallback
@@ -79,25 +76,27 @@ class LoadImageBiz {
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
             String selection;
             String[] imageTypes;
-            if (configuration.isShowGif) {
+            if (ImageSelector.isOnlyShowGif()) {
                 selection = IMAGE_PROJECTION[4] + ">0 AND "
-                        + IMAGE_PROJECTION[3] + "=? OR "
-                        + IMAGE_PROJECTION[3] + "=? OR "
                         + IMAGE_PROJECTION[3] + "=? ";
-                imageTypes = new String[]{"image/jpeg", "image/png", "image/gif"};
+                imageTypes = new String[]{"image/gif"};
             } else {
-                selection = IMAGE_PROJECTION[4] + ">0 AND "
-                        + IMAGE_PROJECTION[3] + "=? OR "
-                        + IMAGE_PROJECTION[3] + "=? ";
-                imageTypes = new String[]{"image/jpeg", "image/png"};
+                if (ImageSelector.isShowGif()) {
+                    selection = IMAGE_PROJECTION[4] + ">0 AND "
+                            + IMAGE_PROJECTION[3] + "=? OR "
+                            + IMAGE_PROJECTION[3] + "=? OR "
+                            + IMAGE_PROJECTION[3] + "=? ";
+                    imageTypes = new String[]{"image/jpeg", "image/png", "image/gif"};
+                } else {
+                    selection = IMAGE_PROJECTION[4] + ">0 AND "
+                            + IMAGE_PROJECTION[3] + "=? OR "
+                            + IMAGE_PROJECTION[3] + "=? ";
+                    imageTypes = new String[]{"image/jpeg", "image/png"};
+                }
             }
             String sortOrder = IMAGE_PROJECTION[2] + " DESC";
-            return new CursorLoader(activity,
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    IMAGE_PROJECTION,
-                    selection,
-                    imageTypes,
-                    sortOrder);
+            return new CursorLoader(activity, MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    IMAGE_PROJECTION, selection, imageTypes, sortOrder);
         }
 
         @Override
@@ -118,14 +117,15 @@ class LoadImageBiz {
             if (data == null || data.isClosed() || data.getCount() <= 0) {
                 return;
             }
-            List<ImageItem> fullList = new ArrayList<>(data.getCount());
+            List<ImageItem> sdcardImageList = new ArrayList<>(data.getCount());
             while (data.moveToNext()) {
-                String imagePath = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[0]));
-                String imageName = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[1]));
-                if (TextUtils.isEmpty(imagePath) || TextUtils.isEmpty(imageName)) {
+                String imgPath = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[0]));
+                String imgName = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[1]));
+                if (TextUtils.isEmpty(imgPath) || TextUtils.isEmpty(imgName)) {
                     continue;
                 }
-                File imageFile = new File(imagePath);
+
+                File imageFile = new File(imgPath);
                 if (!imageFile.exists()) {
                     continue;
                 }
@@ -133,6 +133,7 @@ class LoadImageBiz {
                 if (folderFile == null || !folderFile.exists()) {
                     continue;
                 }
+
                 String folderPath = folderFile.getAbsolutePath();
                 FolderItem folder = getFolderItemByPath(folderPath);
                 if (folder == null) {// create a new folder item
@@ -141,22 +142,22 @@ class LoadImageBiz {
                     folder.path = folderPath;
                     folder.imageList = new ArrayList<>();
                     // add new folder item into folder item list.
-                    folderItemList.add(folder);
+                    folderList.add(folder);
                 }
-                ImageItem newImage = new ImageItem(imagePath);
+                ImageItem newImage = new ImageItem(imgPath);
                 folder.imageList.add(newImage);
-                fullList.add(newImage);
+                sdcardImageList.add(newImage);
             }
             data.close();
-            // set full list into the first folder item
-            folderItemList.get(0).imageList = fullList;
+            // Set sdcard image list into the sdcard folder item.
+            folderList.get(0).imageList = sdcardImageList;
         }
 
     };
 
     @Nullable
     private FolderItem getFolderItemByPath(String path) {
-        for (FolderItem folderItem : folderItemList) {
+        for (FolderItem folderItem : folderList) {
             if (TextUtils.equals(folderItem.path, path)) {
                 return folderItem;
             }
@@ -171,7 +172,7 @@ class LoadImageBiz {
         void onLoadComplete();
     }
 
-    public void setOnLoadCompleteListener(OnLoadCompleteListener listener) {
+    void setOnLoadCompleteListener(OnLoadCompleteListener listener) {
         this.onLoadCompleteListener = listener;
     }
 }

@@ -19,7 +19,7 @@ class PermissionHelper {
 
     private OnPermissionListener onPermissionListener;
 
-    public void accessExternalStorageWithCheck(Activity activity) {
+    void accessExternalStorageWithCheck(Activity activity) {
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermission(activity,
@@ -31,7 +31,7 @@ class PermissionHelper {
         }
     }
 
-    public void showCameraWithCheck(Activity activity) {
+    void showCameraWithCheck(Activity activity) {
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermission(activity,
@@ -61,7 +61,7 @@ class PermissionHelper {
         }
     }
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull int[] grantResults) {
+    void onRequestPermissionsResult(int requestCode, @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_ACCESS_EXTERNAL_STORAGE: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -96,7 +96,7 @@ class PermissionHelper {
         void onAccessExternalStorageDenied();
     }
 
-    public void setOnPermissionListener(OnPermissionListener onPermissionListener) {
+    void setOnPermissionListener(OnPermissionListener onPermissionListener) {
         this.onPermissionListener = onPermissionListener;
     }
 }

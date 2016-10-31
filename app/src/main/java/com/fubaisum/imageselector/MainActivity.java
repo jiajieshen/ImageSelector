@@ -11,11 +11,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.fubaisum.imageselector.lib.ImageSelector;
-import com.fubaisum.imageselector.lib.event.ImageSelectEvent;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        EventBus.getDefault().register(this);
 
         mChoiceMode = (RadioGroup) findViewById(R.id.choice_mode);
         mShowCamera = (RadioGroup) findViewById(R.id.show_camera);
@@ -78,31 +71,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         new ImageSelector.Builder()
-                .setMultipleChoiceMode(isMultipleChoiceMode)
-                .setMaxSelectableSize(maxNum)
-                .setShowCamera(showCamera)
+                .setMultipleChoice(isMultipleChoiceMode)
+                .setMaxSelectedSize(maxNum)
+                .setCameraEnable(showCamera)
                 .setPreviewEnable(showPreview)
                 .build()
-                .launchForActivityCallback(MainActivity.this, REQUEST_IMAGE_SELECTOR);
-//                .launchForEventBusCallback(MainActivity.this) // optional
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSelectComplete(ImageSelectEvent event) {
-        ArrayList<String> pathList = event.getImagePathList();
-        printResult(pathList);
+                .launch(MainActivity.this, REQUEST_IMAGE_SELECTOR);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_IMAGE_SELECTOR) {
-            ArrayList<String> pathList = data.getStringArrayListExtra(ImageSelector.EXTRA_RESULT_LIST);
+            ArrayList<String> pathList = data.getStringArrayListExtra(ImageSelector.EXTRA_IMAGE_PATH_LIST);
             printResult(pathList);
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -18,13 +18,14 @@ import java.util.List;
 /**
  * Created by sum on 8/27/16.
  */
-public class FolderItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class FolderItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Activity activity;
     private List<FolderItem> items;
     private OnItemClickListener onItemClickListener;
 
     private boolean isGlideSkipMemoryCache;
+
     private int crrSelectedPosition = 0;
 
     public FolderItemAdapter(Activity activity) {

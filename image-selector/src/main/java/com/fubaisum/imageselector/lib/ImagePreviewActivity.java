@@ -42,18 +42,18 @@ public class ImagePreviewActivity extends AppCompatActivity
     private CheckBox cbSelected;
     private HackyViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
-    private List<ImageItem> imageItemList;
+    private List<ImageItem> imageList;
     private PreviewStateInfo stateInfo;
 
     public static void launch(Activity activity, int requestCode,
-                              ArrayList<ImageItem> imageUrlList, int position, PreviewStateInfo stateInfo) {
-        if (imageUrlList == null || imageUrlList.size() == 0) {
+                              ArrayList<ImageItem> imageList, int position, PreviewStateInfo stateInfo) {
+        if (imageList == null || imageList.size() == 0) {
             return;
-        } else if (position < 0 || position >= imageUrlList.size()) {
+        } else if (position < 0 || position >= imageList.size()) {
             return;
         }
         Intent intent = new Intent(activity, ImagePreviewActivity.class);
-        intent.putParcelableArrayListExtra(ARG_IMAGE_ITEM_LIST, imageUrlList);
+        intent.putParcelableArrayListExtra(ARG_IMAGE_ITEM_LIST, imageList);
         intent.putExtra(ARG_IMAGE_ITEM_POSITION, position);
         intent.putExtra(ARG_PREVIEW_STATE_INFO, stateInfo);
         activity.startActivityForResult(intent, requestCode);
@@ -79,25 +79,25 @@ public class ImagePreviewActivity extends AppCompatActivity
 
     private void initViewInfo() {
         Intent intent = getIntent();
-        imageItemList = intent.getParcelableArrayListExtra(ARG_IMAGE_ITEM_LIST);
+        imageList = intent.getParcelableArrayListExtra(ARG_IMAGE_ITEM_LIST);
         final int displayPosition = intent.getIntExtra(ARG_IMAGE_ITEM_POSITION, 0);
         stateInfo = intent.getParcelableExtra(ARG_PREVIEW_STATE_INFO);
 
         toolbar.post(new Runnable() {
             @Override
             public void run() {
-                toolbar.setTitle(getString(R.string.is_preview_toolbar_title, displayPosition + 1, imageItemList.size()));
+                toolbar.setTitle(getString(R.string.is_preview_toolbar_title, displayPosition + 1, imageList.size()));
             }
         });
         updateDisplayDoneButton();
 
-        viewPagerAdapter.setItems(imageItemList);
+        viewPagerAdapter.setItems(imageList);
         viewPagerAdapter.notifyDataSetChanged();
         viewPager.setCurrentItem(displayPosition);
 
         if (stateInfo.isMultipleChoiceMode()) {
             cbSelected.setText(R.string.is_select);
-            cbSelected.setChecked(imageItemList.get(displayPosition).isSelected);
+            cbSelected.setChecked(imageList.get(displayPosition).isSelected);
             parentBottom.setVisibility(View.VISIBLE);
         } else {
             btnDone.setEnabled(true);
@@ -150,9 +150,9 @@ public class ImagePreviewActivity extends AppCompatActivity
 
             @Override
             public void onPageSelected(int displayPosition) {
-                toolbar.setTitle(getString(R.string.is_preview_toolbar_title, displayPosition + 1, imageItemList.size()));
+                toolbar.setTitle(getString(R.string.is_preview_toolbar_title, displayPosition + 1, imageList.size()));
                 if (stateInfo.isMultipleChoiceMode()) {
-                    boolean isSelected = imageItemList.get(displayPosition).isSelected;
+                    boolean isSelected = imageList.get(displayPosition).isSelected;
                     cbSelected.setChecked(isSelected);
                 }
             }
@@ -181,7 +181,7 @@ public class ImagePreviewActivity extends AppCompatActivity
 
     private void onSelectImageItem() {
         int crrPosition = viewPager.getCurrentItem();
-        ImageItem imageItem = imageItemList.get(crrPosition);
+        ImageItem imageItem = imageList.get(crrPosition);
 
         if (stateInfo.isMultipleChoiceMode()) {
             // Check border
@@ -224,9 +224,9 @@ public class ImagePreviewActivity extends AppCompatActivity
         }
         int[] selectedPositions = new int[stateInfo.crrSelectedSize];
         int j = 0;
-        int imageItemListSize = imageItemList.size();
+        int imageItemListSize = imageList.size();
         for (int i = 0; i < imageItemListSize; i++) {
-            if (imageItemList.get(i).isSelected) {
+            if (imageList.get(i).isSelected) {
                 selectedPositions[j] = i;
                 j++;
                 if (j >= stateInfo.crrSelectedSize) {
@@ -249,7 +249,7 @@ public class ImagePreviewActivity extends AppCompatActivity
             setResult(RESULT_OK, intent);
         } else {
             int displayPosition = viewPager.getCurrentItem();
-            String path = imageItemList.get(displayPosition).path;
+            String path = imageList.get(displayPosition).path;
             Intent intent = new Intent();
             intent.putExtra(EXTRA_RADIO_SELECTED_PATH, path);
             setResult(RESULT_OK, intent);
