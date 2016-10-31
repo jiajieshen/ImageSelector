@@ -4,10 +4,10 @@ package com.fubaisum.imageselector.lib;
  * Created by sum on 10/30/16.
  */
 
-public abstract class ImageSelectorHook {
+import android.app.Activity;
 
-    static ImageSelectorHook EMPTY_HOOK = new ImageSelectorHook() {
+public interface ImageSelectorHook {
 
-    };
+    void onImageThumbnailClick(Activity activity, String imagePath);
 
 }

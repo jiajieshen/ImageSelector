@@ -30,7 +30,6 @@ import com.fubaisum.imageselector.lib.model.PreviewStateInfo;
 import com.fubaisum.imageselector.lib.util.FileUtils;
 import com.fubaisum.imageselector.lib.widget.ItemOffsetDecoration;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -376,13 +375,20 @@ public class ImageSelectorActivity extends AppCompatActivity
 
     @Override
     public void onClickImageItem(int position) {
-        ArrayList<ImageItem> imageItemList = (ArrayList<ImageItem>) imageItemAdapter.getItems();
+        ImageSelectorHook hook = ImageSelector.getHook();
+        if (hook == null) {
+            PreviewStateInfo stateInfo = new PreviewStateInfo();
+            stateInfo.maxSelectableSize = ImageSelector.getMaxSelectedSize();
+            stateInfo.crrSelectedSize = imageItemAdapter.getCurrentSelectedSize();
 
-        PreviewStateInfo stateInfo = new PreviewStateInfo();
-        stateInfo.maxSelectableSize = ImageSelector.getMaxSelectedSize();
-        stateInfo.crrSelectedSize = imageItemAdapter.getCurrentSelectedSize();
+            ArrayList<ImageItem> imageList = (ArrayList<ImageItem>) imageItemAdapter.getItems();
+            ImagePreviewActivity.launch(this, REQUEST_PREVIEW, imageList, position, stateInfo);
 
-        ImagePreviewActivity.launch(this, REQUEST_PREVIEW, imageItemList, position, stateInfo);
+        } else {
+            ArrayList<ImageItem> imageList = (ArrayList<ImageItem>) imageItemAdapter.getItems();
+            ImageItem image = imageList.get(position);
+            hook.onImageThumbnailClick(this, image.path);
+        }
     }
 
     @Override

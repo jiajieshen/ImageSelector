@@ -46,18 +46,16 @@ class ViewPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-
+        ImageItem imageItem = items.get(position);
         PhotoView photoView = new PhotoView(container.getContext());
         photoView.setOnViewTapListener(onViewTapListener);
         container.addView(photoView,
                 ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.MATCH_PARENT);
-
-        ImageItem imageItem = items.get(position);
         Glide.with(activity)
                 .load(imageItem.path)
                 .asBitmap()
+                .fitCenter()
                 .into(photoView);
-
         return photoView;
     }
 

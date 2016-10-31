@@ -29,19 +29,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checkedButton="@+id/multi"
-            android:orientation="vertical">
-
-            <RadioButton
-                android:id="@+id/single"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/mode_single" />
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/multi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/mode_multi" />
+
+            <RadioButton
+                android:id="@+id/single"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/mode_single" />
 
         </RadioGroup>
 
@@ -74,18 +76,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checkedButton="@+id/show"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/show"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/enable" />
 
             <RadioButton
                 android:id="@+id/no_show"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/disable" />
 
         </RadioGroup>
@@ -103,19 +107,83 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checkedButton="@+id/preview"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/preview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/enable" />
 
             <RadioButton
                 android:id="@+id/no_preview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/disable" />
+
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/show_gif"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/show_gif"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checkedButton="@+id/no_show_gif"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/yes_show_gif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/yes" />
+
+            <RadioButton
+                android:id="@+id/no_show_gif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/no" />
+
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/only_show_gif"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/only_show_gif"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checkedButton="@+id/no_only_show_gif"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/yes_only_show_gif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/yes" />
+
+            <RadioButton
+                android:id="@+id/no_only_show_gif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/no" />
 
         </RadioGroup>
 
@@ -123,6 +191,7 @@
             android:id="@+id/btn_main_launch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:text="Launch" />
 
         <TextView

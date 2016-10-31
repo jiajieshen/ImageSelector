@@ -9,7 +9,11 @@
     <string name="hint_default_amount">default amount is 9</string>
     <string name="enable_camera">Enable Camera</string>
     <string name="enable_preview">Enable Preview</string>
+    <string name="show_gif">Show Gif</string>
+    <string name="only_show_gif">Only Show Gif</string>
     <string name="enable">Enable</string>
     <string name="disable">Disable</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="go_select">Select</string>
 </resources>

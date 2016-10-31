@@ -2,7 +2,7 @@ package com.fubaisum.imageselector.lib;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Created by sum on 8/26/16.
@@ -62,13 +62,9 @@ public class ImageSelector {
         return instance.maxSelectedSize;
     }
 
-    @NonNull
+    @Nullable
     static ImageSelectorHook getHook() {
-        if (instance.hook == null) {
-            return ImageSelectorHook.EMPTY_HOOK;
-        } else {
-            return instance.hook;
-        }
+        return instance.hook;
     }
 
     /**

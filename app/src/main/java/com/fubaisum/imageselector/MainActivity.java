@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE_SELECTOR = 0x100;
 
-    private RadioGroup mChoiceMode, mShowCamera, mShowPreview;
+    private RadioGroup mChoiceMode, mShowCamera, mShowPreview, mShowGif, mOnlyShowGif;
     private EditText mRequestNum;
     private TextView mResultText;
 
@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         mChoiceMode = (RadioGroup) findViewById(R.id.choice_mode);
         mShowCamera = (RadioGroup) findViewById(R.id.show_camera);
         mShowPreview = (RadioGroup) findViewById(R.id.show_preview);
+        mShowGif = (RadioGroup) findViewById(R.id.show_gif);
+        mOnlyShowGif = (RadioGroup) findViewById(R.id.only_show_gif);
         mRequestNum = (EditText) findViewById(R.id.request_num);
         mResultText = (TextView) findViewById(R.id.result);
 
@@ -61,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
         boolean isMultipleChoiceMode = mChoiceMode.getCheckedRadioButtonId() != R.id.single;
         boolean showCamera = mShowCamera.getCheckedRadioButtonId() == R.id.show;
         boolean showPreview = mShowPreview.getCheckedRadioButtonId() == R.id.preview;
+        boolean showGif = mShowGif.getCheckedRadioButtonId() == R.id.yes_show_gif;
+        boolean onlyShowGif = mOnlyShowGif.getCheckedRadioButtonId() == R.id.yes_only_show_gif;
         int maxNum = 9;
         if (!TextUtils.isEmpty(mRequestNum.getText())) {
             try {
@@ -75,6 +79,16 @@ public class MainActivity extends AppCompatActivity {
                 .setMaxSelectedSize(maxNum)
                 .setCameraEnable(showCamera)
                 .setPreviewEnable(showPreview)
+                .setShowGif(showGif)
+                .setOnlyShowGif(onlyShowGif)
+//                .setHook(new ImageSelectorHook() {
+//                    @Override
+//                    public void onImageThumbnailClick(Activity activity, String imagePath) {
+//                        List<String> imageList = new ArrayList<>();
+//                        imageList.add(imagePath);
+//                        printResult(imageList);
+//                    }
+//                })
                 .build()
                 .launch(MainActivity.this, REQUEST_IMAGE_SELECTOR);
     }
