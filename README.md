@@ -43,4 +43,5 @@ repositories {
         super.onActivityResult(requestCode, resultCode, data);
     }
 ```
-
+# Thanks
+[lovetuzitong/MultiImageSelector](https://github.com/lovetuzitong/MultiImageSelector)
