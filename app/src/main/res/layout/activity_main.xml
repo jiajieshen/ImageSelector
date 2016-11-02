@@ -131,14 +131,16 @@
             android:text="@string/show_gif"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <RadioGroup
             android:id="@+id/show_gif"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checkedButton="@+id/no_show_gif"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <RadioButton
                 android:id="@+id/yes_show_gif"
@@ -162,14 +164,16 @@
             android:text="@string/only_show_gif"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <RadioGroup
             android:id="@+id/only_show_gif"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checkedButton="@+id/no_only_show_gif"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <RadioButton
                 android:id="@+id/yes_only_show_gif"

@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void launchImageSelector() {
 
-        boolean isMultipleChoiceMode = mChoiceMode.getCheckedRadioButtonId() != R.id.single;
+        boolean isMultipleChoice = mChoiceMode.getCheckedRadioButtonId() != R.id.single;
         boolean showCamera = mShowCamera.getCheckedRadioButtonId() == R.id.show;
         boolean showPreview = mShowPreview.getCheckedRadioButtonId() == R.id.preview;
         boolean showGif = mShowGif.getCheckedRadioButtonId() == R.id.yes_show_gif;
@@ -75,12 +75,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         new ImageSelector.Builder()
-                .setMultipleChoice(isMultipleChoiceMode)
+                .setMultipleChoice(isMultipleChoice)
                 .setMaxSelectedSize(maxNum)
                 .setCameraEnable(showCamera)
                 .setPreviewEnable(showPreview)
-                .setShowGif(showGif)
-                .setOnlyShowGif(onlyShowGif)
 //                .setHook(new ImageSelectorHook() {
 //                    @Override
 //                    public void onImageThumbnailClick(Activity activity, String imagePath) {
