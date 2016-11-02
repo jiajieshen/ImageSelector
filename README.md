@@ -10,18 +10,26 @@ repositories {
 # Add dependency
 ```gradle
         compile 'com.scausum.imageselector:image-selector:0.1.3'
+        compile 'com.github.chrisbanes:PhotoView:1.3.0'
+        compile 'com.github.bumptech.glide:glide:3.7.0'
 ```
 
 # USAGE
 ## launch
 ```java
         new ImageSelector.Builder()
-                .setMultipleChoiceMode(isMultipleChoiceMode)
-                .setMaxSelectableSize(maxNum)
-                .setShowCamera(showCamera)
+                .setMultipleChoice(isMultipleChoice)
+                .setMaxSelectedSize(maxNum)
+                .setCameraEnable(showCamera)
+                .setPreviewEnable(showPreview)
+//                .setHook(new ImageSelectorHook() {
+//                    @Override
+//                    public void onImageThumbnailClick(Activity activity, String imagePath) {
+//                        //do something
+//                    }
+//                })
                 .build()
-                .launchForActivityCallback(MainActivity.this, REQUEST_IMAGE_SELECTOR);
-                //.launchForEventBusCallback(MainActivity.this);//or
+                .launch(MainActivity.this, REQUEST_IMAGE_SELECTOR);
 ```
 
 ## callback
@@ -35,11 +43,4 @@ repositories {
         super.onActivityResult(requestCode, resultCode, data);
     }
 ```
-### or
-```java
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSelectComplete(SelectCompleteEvent event) {
-        ArrayList<String> pathList = event.getSelectedPathList();
-        // do something
-    }
-```
+
