@@ -18,6 +18,8 @@ public class ImageSelector {
 
     private static ImageSelector instance;
 
+    // hint
+    String galleryTitle = "";
     // feature
     boolean isCameraEnable = true;
     boolean isPreviewEnable = true;
@@ -36,6 +38,10 @@ public class ImageSelector {
     static void clearInstance() {
         instance.hook = null;
         instance = null;
+    }
+
+    static String getGalleryTitle() {
+        return instance.galleryTitle;
     }
 
     static boolean isCameraEnable() {
@@ -122,6 +128,11 @@ public class ImageSelector {
             return this;
         }
 
+        public Builder setGalleryTitle(String title) {
+            imageSelector.galleryTitle = title;
+            return this;
+        }
+
         public ImageSelector build() {
             if (imageSelector.isMultipleChoice) {
                 if (imageSelector.maxSelectedSize <= 1) {
@@ -132,6 +143,5 @@ public class ImageSelector {
             }
             return imageSelector;
         }
-
     }
 }

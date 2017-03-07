@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         new ImageSelector.Builder()
+                .setGalleryTitle(getString(R.string.app_name))
                 .setMultipleChoice(isMultipleChoice)
                 .setMaxSelectedSize(maxNum)
                 .setCameraEnable(showCamera)

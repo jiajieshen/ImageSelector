@@ -200,7 +200,7 @@ class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             @Override
             public void onClick(View v) {
                 int position = imageItemViewHolder.getAdapterPosition();
-                if (isCanPreview) {
+                if (isCanPreview || !isMultipleChoiceMode) {
                     onClickImageItem(position);
                 } else {
                     onSelectImageItem(null, position);
@@ -214,6 +214,10 @@ class ImageItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 onSelectImageItem((CheckBox) v, position);
             }
         });
+        // fix (radio = true && preview = false)
+        if (!isMultipleChoiceMode && !isCanPreview) {
+            imageItemViewHolder.cbState.setVisibility(View.GONE);
+        }
         return imageItemViewHolder;
     }
 

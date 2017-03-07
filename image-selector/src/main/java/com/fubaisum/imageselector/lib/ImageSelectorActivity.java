@@ -19,6 +19,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -95,6 +96,12 @@ public class ImageSelectorActivity extends AppCompatActivity
     private void setupToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.is_toolbar);
         assert toolbar != null;
+        // custom gallery title
+        String title = ImageSelector.getGalleryTitle();
+        if (!TextUtils.isEmpty(title)) {
+            toolbar.setTitle(ImageSelector.getGalleryTitle());
+        }
+        //
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -110,6 +117,11 @@ public class ImageSelectorActivity extends AppCompatActivity
         assert btnDone != null;
         btnDone.setEnabled(false);
         btnDone.setOnClickListener(this);
+
+        // fix (radio = true && preview = false)
+        if (!ImageSelector.isMultipleChoice() && !ImageSelector.isPreviewEnable()) {
+            btnDone.setVisibility(View.GONE);
+        }
     }
 
     private void setupImageRecyclerView() {
@@ -377,13 +389,20 @@ public class ImageSelectorActivity extends AppCompatActivity
     public void onClickImageItem(int position) {
         ImageSelectorHook hook = ImageSelector.getHook();
         if (hook == null) {
-            PreviewStateInfo stateInfo = new PreviewStateInfo();
-            stateInfo.maxSelectableSize = ImageSelector.getMaxSelectedSize();
-            stateInfo.crrSelectedSize = imageItemAdapter.getCurrentSelectedSize();
+            if (ImageSelector.isPreviewEnable()) {
+                PreviewStateInfo stateInfo = new PreviewStateInfo();
+                stateInfo.maxSelectableSize = ImageSelector.getMaxSelectedSize();
+                stateInfo.crrSelectedSize = imageItemAdapter.getCurrentSelectedSize();
 
-            ArrayList<ImageItem> imageList = (ArrayList<ImageItem>) imageItemAdapter.getItems();
-            ImagePreviewActivity.launch(this, REQUEST_PREVIEW, imageList, position, stateInfo);
-
+                ArrayList<ImageItem> imageList = (ArrayList<ImageItem>) imageItemAdapter.getItems();
+                ImagePreviewActivity.launch(this, REQUEST_PREVIEW, imageList, position, stateInfo);
+            }else{
+                // 单选情况下，点击图片不预览
+                ArrayList<ImageItem> imageList = (ArrayList<ImageItem>) imageItemAdapter.getItems();
+                ArrayList<String> pathList = new ArrayList<>(1);
+                pathList.add(imageList.get(position).path);
+                executeCallback(pathList);
+            }
         } else {
             ArrayList<ImageItem> imageList = (ArrayList<ImageItem>) imageItemAdapter.getItems();
             ImageItem image = imageList.get(position);
