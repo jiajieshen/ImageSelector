@@ -6,14 +6,14 @@
     android:clickable="true"
     android:foreground="?selectableItemBackgroundBorderless">
 
-    <com.fubaisum.imageselector.lib.widget.SquareImageView
+    <com.scausum.imageselector.lib.widget.SquareImageView
         android:id="@+id/is_siv_image_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         tools:src="@mipmap/is_thumbnail_default">
 
-    </com.fubaisum.imageselector.lib.widget.SquareImageView>
+    </com.scausum.imageselector.lib.widget.SquareImageView>
 
     <ViewStub
         android:id="@+id/is_stub_image_mask"
