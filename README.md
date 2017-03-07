@@ -13,6 +13,9 @@ repositories {
         compile 'com.github.chrisbanes:PhotoView:1.3.0'
         compile 'com.github.bumptech.glide:glide:3.7.0'
 ```
+# Screenshot
+![Image](https://github.com/jiajieshen/ImageSelector/blob/master/screenshot/src.jpg)
+![Image](https://github.com/jiajieshen/ImageSelector/blob/master/screenshot/src-overdraw.jpg)
 
 # USAGE
 ## launch
