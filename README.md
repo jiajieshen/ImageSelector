@@ -4,15 +4,18 @@
 ```gradle
 repositories {
     maven { url "https://jitpack.io" }
-    maven { url 'https://dl.bintray.com/fubaisum/maven/' }
+    maven { url 'https://dl.bintray.com/scausum/maven/' }
 }
 ```
 # Add dependency
 ```gradle
-        compile 'com.scausum.imageselector:image-selector:0.1.3'
+        compile 'com.scausum.imageselector:image-selector:0.2.0'
         compile 'com.github.chrisbanes:PhotoView:1.3.0'
         compile 'com.github.bumptech.glide:glide:3.7.0'
 ```
+# Screenshot
+![Image](https://github.com/jiajieshen/ImageSelector/blob/master/screenshot/src.jpg)
+![Image](https://github.com/jiajieshen/ImageSelector/blob/master/screenshot/src-overdraw.jpg)
 
 # USAGE
 ## launch
@@ -37,7 +40,7 @@ repositories {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_IMAGE_SELECTOR) {
-            ArrayList<String> pathList = data.getStringArrayListExtra(ImageSelector.EXTRA_RESULT_LIST);
+            ArrayList<String> pathList = data.getStringArrayListExtra(ImageSelector.EXTRA_IMAGE_PATH_LIST);
             // do something
         }
         super.onActivityResult(requestCode, resultCode, data);

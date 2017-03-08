@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/is_color_21282c">
 
-    <com.fubaisum.imageselector.lib.widget.HackyViewPager
+    <com.scausum.imageselector.lib.widget.HackyViewPager
         android:id="@+id/is_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
