@@ -88,9 +88,9 @@ public class ImageSelectorActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         // Clear the static instance.
         ImageSelector.clearInstance();
+        super.onDestroy();
     }
 
     private void setupToolbar() {
