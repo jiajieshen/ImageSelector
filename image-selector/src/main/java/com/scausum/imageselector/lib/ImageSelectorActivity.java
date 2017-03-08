@@ -278,7 +278,7 @@ public class ImageSelectorActivity extends AppCompatActivity
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intent.resolveActivity(getPackageManager()) != null) {
             try {
-                mTmpFile = FileUtils.createTmpFile(this);
+                mTmpFile = FileUtils.createTmpJpgPicture(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
