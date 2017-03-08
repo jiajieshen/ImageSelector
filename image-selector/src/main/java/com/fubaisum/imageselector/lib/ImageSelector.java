@@ -36,8 +36,10 @@ public class ImageSelector {
     }
 
     static void clearInstance() {
-        instance.hook = null;
-        instance = null;
+        if (instance != null) {
+            instance.hook = null;
+            instance = null;
+        }
     }
 
     static String getGalleryTitle() {
