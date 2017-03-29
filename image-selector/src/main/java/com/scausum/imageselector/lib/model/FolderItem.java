@@ -3,13 +3,13 @@ package com.scausum.imageselector.lib.model;
 import java.util.List;
 
 /**
- * The folder item.
+ * The image folder item.
  */
 public class FolderItem {
 
     // The absolute path
     public String path;
-    // The file name
+    // The folder name
     public String name;
     // The image items under folder
     public List<ImageItem> imageList;

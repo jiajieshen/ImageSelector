@@ -18,23 +18,22 @@ public class ImageSelector {
 
     private static ImageSelector instance;
 
-    // hint
-    String galleryTitle = "";
-    // feature
+    String galleryTitle = ImageSelector.class.getSimpleName();
     boolean isCameraEnable = true;
     boolean isPreviewEnable = true;
     boolean isMultipleChoice = true;
     boolean isShowGif = false;
     boolean isOnlyShowGif = false;
-    // other data
     int maxSelectedSize = DEFAULT_MAX_MULTIPLE_CHOICE_SIZE;
-    // hook
     ImageSelectorHook hook;
 
     private ImageSelector() {
         instance = this;
     }
 
+    /**
+     * Clear the ImageSelector static instance to avoid memory leak.
+     */
     static void clearInstance() {
         instance = null;
     }

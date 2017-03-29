@@ -396,7 +396,7 @@ public class ImageSelectorActivity extends AppCompatActivity
 
                 ArrayList<ImageItem> imageList = (ArrayList<ImageItem>) imageItemAdapter.getItems();
                 ImagePreviewActivity.launch(this, REQUEST_PREVIEW, imageList, position, stateInfo);
-            }else{
+            } else {
                 // 单选情况下，点击图片不预览
                 ArrayList<ImageItem> imageList = (ArrayList<ImageItem>) imageItemAdapter.getItems();
                 ArrayList<String> pathList = new ArrayList<>(1);
