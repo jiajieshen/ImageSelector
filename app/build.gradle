@@ -22,15 +22,14 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    compile 'com.android.support:design:25.1.1'
-    compile 'com.android.support:recyclerview-v7:25.1.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
 
     compile project(':image-selector')
     compile 'com.github.chrisbanes:PhotoView:1.3.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-    debugCompile 'com.github.markzhai:blockcanary-android:1.3.1'
-//    debugCompile 'me.drakeet.library:crashwoodpecker:2.1.1'
+    debugCompile 'com.github.markzhai:blockcanary-android:1.5.0'
 }
